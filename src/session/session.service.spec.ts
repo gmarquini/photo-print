@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SessionService } from './session.service';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('SessionService', () => {
   let service: SessionService;
