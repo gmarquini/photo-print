@@ -8,7 +8,7 @@ import {
 import { PhotoService } from './photo.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-@Controller('sessions')
+@Controller('session')
 export class PhotoController {
   constructor(private readonly photoService: PhotoService) {}
 

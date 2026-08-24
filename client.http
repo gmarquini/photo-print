@@ -1,0 +1,26 @@
+@baseUrl = http://localhost:3000
+
+# @name create_session
+POST {{baseUrl}}/session
+Content-Type: application/json
+
+{
+
+}
+
+###
+
+# @name upload-image
+POST {{baseUrl}}/session/:sessionId/photo
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="username"
+
+Example
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="example"; filename="exampleImage.jpg"
+Content-Type: image/jpeg
+
+< "./src/exampleFiles/exampleImage.jpg"
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
