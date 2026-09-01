@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Photo } from './entities/Photo';
-import { PhotoRepository } from '@/session/repositories/PhotoRepository';
+import { PhotoRepository } from '@/repositories/PhotoRepository';
 import { FileStorage } from '@/storage/FileStorage';
 
 @Injectable()
@@ -30,5 +30,24 @@ export class PhotoService {
       }
     }
     return photos;
+  }
+
+  async show(sessionId: string): Promise<Photo[]> {
+    const photos = await this.photoRepository.findBySessionId(sessionId);
+
+    return photos;
+  }
+
+  async remove(sessionId: string, photoId: string) {
+    const photo = await this.photoRepository.findByPhotoId(photoId);
+
+    if (!photo) {
+      throw new Error('Foto não encontrada');
+    }
+
+    await this.fileStorage.delete(photo.filename);
+    await this.photoRepository.delete(sessionId, photoId);
+
+    return;
   }
 }

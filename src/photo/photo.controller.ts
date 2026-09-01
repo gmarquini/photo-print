@@ -1,5 +1,7 @@
 import {
   Controller,
+  Delete,
+  Get,
   Param,
   Post,
   UploadedFiles,
@@ -8,7 +10,7 @@ import {
 import { PhotoService } from './photo.service';
 import { FilesInterceptor } from '@nestjs/platform-express';
 
-@Controller('session')
+@Controller('sessions')
 export class PhotoController {
   constructor(private readonly photoService: PhotoService) {}
 
@@ -19,5 +21,18 @@ export class PhotoController {
     @UploadedFiles() files: Express.Multer.File[],
   ) {
     return this.photoService.create(sessionId, files);
+  }
+
+  @Get(':sessionId/photos')
+  show(@Param('sessionId') sessionId: string) {
+    return this.photoService.show(sessionId);
+  }
+
+  @Delete(':sessionId/photos/:photoId')
+  remove(
+    @Param('sessionId') sessionId: string,
+    @Param('photoId') photoId: string,
+  ) {
+    return this.photoService.remove(sessionId, photoId);
   }
 }

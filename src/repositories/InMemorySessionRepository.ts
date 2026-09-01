@@ -1,4 +1,4 @@
-import { Session } from '../entities/Session';
+import { Session } from '@/session/entities/Session';
 import { SessionRepository } from './SessionRepository';
 
 export class InMemorySessionRepository implements SessionRepository {
