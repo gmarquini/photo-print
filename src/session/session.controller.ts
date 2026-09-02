@@ -1,5 +1,5 @@
 import { SessionService } from './session.service';
-import { Controller, Post } from '@nestjs/common';
+import { Controller, Delete, Param, Post } from '@nestjs/common';
 
 @Controller('sessions')
 export class SessionController {
@@ -9,5 +9,11 @@ export class SessionController {
   async create() {
     const session = await this.sessionService.create();
     return session;
+  }
+
+  @Delete(':sessionId')
+  async delete(@Param('sessionId') sessionId: string) {
+    await this.sessionService.delete(sessionId);
+    return;
   }
 }

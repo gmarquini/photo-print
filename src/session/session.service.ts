@@ -14,9 +14,9 @@ export class SessionService {
     return newSession;
   }
 
-  async delete(sessionId: string) {
-    await this.sessionRepository.delete(sessionId);
+  async finish(sessionId: string) {
+    await this.sessionRepository.finish(sessionId);
 
-    return 'Sessão finalizada';
+    return;
   }
 }

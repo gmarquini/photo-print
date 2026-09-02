@@ -2,7 +2,7 @@
 
 Cliente inicia sessão
 ↓
-Cliente seleciona foto
+Cliente seleciona foto(s)
 ↓
 Sistema recebe o arquivo
 ↓
@@ -30,7 +30,7 @@ Sessões
 [x] O sistema deve permitir consultar uma sessão pelo seu identificador.
 [x] O sistema deve rejeitar operações realizadas com um identificador de sessão inexistente.
 [x] O sistema deve permitir encerrar uma sessão.
-[ ] O sistema deve impedir o envio de novas fotos para uma sessão encerrada.
+[x] O sistema deve impedir o envio de novas fotos para uma sessão encerrada.
 [x] O sistema deve permitir que várias fotos sejam associadas à mesma sessão.
 
 Fotos

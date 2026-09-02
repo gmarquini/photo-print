@@ -16,12 +16,12 @@ export class InMemorySessionRepository implements SessionRepository {
     return session ?? null;
   }
 
-  async delete(sessionId: string) {
+  async finish(sessionId: string) {
     const sessionIndex = this.sessions.findIndex(
       (session) => session.id === sessionId,
     );
 
-    this.sessions.splice(sessionIndex, 1);
+    this.sessions[sessionIndex].status = 'finished';
 
     return;
   }
