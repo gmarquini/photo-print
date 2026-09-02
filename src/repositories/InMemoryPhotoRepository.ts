@@ -2,7 +2,7 @@ import { Photo } from '@/photo/entities/Photo';
 import { PhotoRepository } from './PhotoRepository';
 
 export class InMemoryPhotoRepository implements PhotoRepository {
-  private readonly photos: Photo[] = [];
+  private photos: Photo[] = [];
 
   async create(photo: Photo): Promise<Photo> {
     this.photos.push(photo);
@@ -33,5 +33,9 @@ export class InMemoryPhotoRepository implements PhotoRepository {
     }
 
     this.photos.splice(photoIndex, 1);
+  }
+
+  async deleteMany(sessionId: string) {
+    this.photos = this.photos.filter((photo) => photo.sessionId != sessionId);
   }
 }

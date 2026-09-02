@@ -5,4 +5,5 @@ export abstract class PhotoRepository {
   abstract findBySessionId(sessionId: string): Promise<Photo[]>;
   abstract findByPhotoId(photoId: string): Promise<Photo | null>;
   abstract delete(sessionid: string, photoId: string): Promise<void>;
+  abstract deleteMany(sessionId: string): Promise<void>;
 }

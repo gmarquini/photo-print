@@ -29,34 +29,34 @@ Sessões
 [x] O sistema deve registrar a data e hora de criação da sessão.
 [x] O sistema deve permitir consultar uma sessão pelo seu identificador.
 [x] O sistema deve rejeitar operações realizadas com um identificador de sessão inexistente.
-[ ] O sistema deve permitir encerrar uma sessão.
+[x] O sistema deve permitir encerrar uma sessão.
 [ ] O sistema deve impedir o envio de novas fotos para uma sessão encerrada.
 [x] O sistema deve permitir que várias fotos sejam associadas à mesma sessão.
 
-Upload de fotos
+Fotos
 
-[ ] O sistema deve permitir o envio de uma ou várias fotos em uma requisição.
+[x] O sistema deve permitir o envio de uma ou várias fotos em uma requisição.
 [ ] O sistema deve aceitar os principais formatos de imagem utilizados em celulares.
-[ ] O sistema deve armazenar fisicamente os arquivos enviados.
-[ ] O sistema deve gerar um nome único para cada arquivo armazenado.
-[ ] O sistema deve preservar o nome original do arquivo.
-[ ] O sistema deve armazenar o tipo MIME da foto.
-[ ] O sistema deve armazenar o tamanho do arquivo.
-[ ] O sistema deve gerar um identificador único para cada foto.
-[ ] O sistema deve associar cada foto à sessão que realizou o upload.
+[x] O sistema deve armazenar fisicamente os arquivos enviados.
+[x] O sistema deve gerar um nome único para cada arquivo armazenado.
+[x] O sistema deve preservar o nome original do arquivo.
+[x] O sistema deve armazenar o tipo MIME da foto.
+[x] O sistema deve armazenar o tamanho do arquivo.
+[x] O sistema deve gerar um identificador único para cada foto.
+[x] O sistema deve associar cada foto à sessão que realizou o upload.
 [ ] O sistema deve permitir consultar uma foto pelo seu identificador.
-[ ] O sistema deve permitir listar as fotos de uma sessão.
-[ ] O sistema deve permitir remover uma foto de uma sessão.
-[ ] Ao remover uma foto, o sistema deve remover também seu arquivo físico.
+[x] O sistema deve permitir listar as fotos de uma sessão.
+[x] O sistema deve permitir remover uma ou mais fotos de uma sessão.
+[x] Ao remover uma foto, o sistema deve remover também seu arquivo físico.
 [ ] O sistema deve informar ao cliente quando o upload for concluído.
 [ ] O sistema deve informar quais arquivos falharam durante um upload múltiplo.
 
 Armazenamento
 
-[ ] O sistema deve possuir uma abstração para armazenamento de arquivos.
-[ ] O sistema deve possuir uma implementação de armazenamento local.
-[ ] O sistema deve permitir substituir o armazenamento local por outro armazenamento sem alterar o domínio.
-[ ] O sistema deve organizar os arquivos de forma que seja possível identificar a sessão à qual pertencem.
+[x] O sistema deve possuir uma abstração para armazenamento de arquivos.
+[x] O sistema deve possuir uma implementação de armazenamento local.
+[x] O sistema deve permitir substituir o armazenamento local por outro armazenamento sem alterar o domínio.
+[x] O sistema deve organizar os arquivos de forma que seja possível identificar a sessão à qual pertencem.
 [ ] O sistema deve impedir colisões de nomes entre arquivos.
 [ ] O sistema deve remover arquivos órfãos quando uma operação de criação de foto falhar.
 

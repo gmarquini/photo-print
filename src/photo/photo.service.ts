@@ -2,14 +2,22 @@ import { Injectable } from '@nestjs/common';
 import { Photo } from './entities/Photo';
 import { PhotoRepository } from '@/repositories/PhotoRepository';
 import { FileStorage } from '@/storage/FileStorage';
+import { SessionRepository } from '@/repositories/SessionRepository';
 
 @Injectable()
 export class PhotoService {
   constructor(
+    private readonly sessionRepositoy: SessionRepository,
     private readonly photoRepository: PhotoRepository,
     private readonly fileStorage: FileStorage,
   ) {}
   async create(sessionId: string, files: Express.Multer.File[]) {
+    const session = this.sessionRepositoy.findById(sessionId);
+
+    if (session === null) {
+      throw new Error('Sessão não encontrada.');
+    }
+
     const photos: Photo[] = [];
 
     for (const file of files) {
@@ -49,5 +57,15 @@ export class PhotoService {
     await this.photoRepository.delete(sessionId, photoId);
 
     return;
+  }
+
+  async removeMany(sessionId: string) {
+    const photos = await this.photoRepository.findBySessionId(sessionId);
+
+    for (const photo of photos) {
+      await this.fileStorage.delete(photo.filename);
+    }
+
+    await this.photoRepository.deleteMany(sessionId);
   }
 }
