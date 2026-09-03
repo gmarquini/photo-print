@@ -122,9 +122,9 @@ Desempenho
 
 Segurança
 
-[ ] O sistema deve validar o tipo dos arquivos enviados.  
-[ ] O sistema deve limitar o tamanho máximo de cada arquivo.  
-[ ] O sistema deve limitar a quantidade de arquivos por requisição.  
+[x] O sistema deve validar o tipo dos arquivos enviados.  
+[x] O sistema deve limitar o tamanho máximo de cada arquivo.  
+[x] O sistema deve limitar a quantidade de arquivos por requisição.  
 [ ] O sistema deve validar os dados recebidos pelo cliente.  
 [ ] O sistema não deve confiar exclusivamente na extensão do arquivo.  
 [ ] O sistema deve impedir acesso arbitrário ao filesystem através de nomes de arquivos enviados pelo usuário.  
@@ -135,7 +135,7 @@ Segurança
 
 Confiabilidade
 
-[ ] O sistema não deve criar registros de fotos quando o armazenamento físico falhar.  
+[x] O sistema não deve criar registros de fotos quando o armazenamento físico falhar.  
 [ ] O sistema deve evitar arquivos físicos órfãos.  
 [ ] O sistema deve manter consistência entre arquivos e registros do banco.  
 [ ] O sistema deve tratar falhas parciais em uploads múltiplos.  
@@ -145,12 +145,12 @@ Confiabilidade
 
 Manutenibilidade
 
-[ ] O domínio não deve depender diretamente do Prisma.  
-[ ] O domínio não deve depender diretamente do filesystem.  
-[ ] O PhotoService deve depender de abstrações.  
-[ ] O armazenamento de arquivos deve possuir uma abstração FileStorage.  
+[x] O domínio não deve depender diretamente do Prisma.  
+[x] O domínio não deve depender diretamente do filesystem.  
+[x] O PhotoService deve depender de abstrações.  
+[x] O armazenamento de arquivos deve possuir uma abstração FileStorage.  
 [ ] Os repositories devem possuir abstrações.  
-[ ] As implementações dos repositories devem poder ser substituídas.  
+[x] As implementações dos repositories devem poder ser substituídas.  
 [ ] O sistema deve possuir testes unitários para as regras de domínio.  
 [ ] O sistema deve possuir testes para os services.  
 [ ] O sistema deve possuir testes para os controllers.  
