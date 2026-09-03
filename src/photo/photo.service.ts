@@ -3,6 +3,7 @@ import { Photo } from './entities/Photo';
 import { PhotoRepository } from '@/repositories/PhotoRepository';
 import { FileStorage } from '@/storage/FileStorage';
 import { SessionRepository } from '@/repositories/SessionRepository';
+import { AppError } from '@/errors/AppError';
 
 @Injectable()
 export class PhotoService {
@@ -15,7 +16,7 @@ export class PhotoService {
     const session = this.sessionRepositoy.findById(sessionId);
 
     if (session === null) {
-      throw new Error('Sessão não encontrada.');
+      throw new AppError('Sessão não encontrada.');
     }
 
     const photos: Photo[] = [];
@@ -40,7 +41,30 @@ export class PhotoService {
     return photos;
   }
 
-  async show(sessionId: string): Promise<Photo[]> {
+  async getPhotoById(sessionId: string, photoId: string): Promise<Photo> {
+    const session = await this.sessionRepositoy.findById(sessionId);
+    console.log(session);
+
+    if (!session) {
+      throw new AppError('Sessão não encontrada');
+    }
+
+    const photo = await this.photoRepository.findByPhotoId(photoId);
+
+    if (!photo) {
+      throw new AppError('Foto não encontrada');
+    }
+
+    return photo;
+  }
+
+  async getPhotosBySessionId(sessionId: string): Promise<Photo[]> {
+    const session = await this.sessionRepositoy.findById(sessionId);
+
+    if (!session) {
+      throw new AppError('Sessão não encontrada');
+    }
+
     const photos = await this.photoRepository.findBySessionId(sessionId);
 
     return photos;
@@ -50,7 +74,7 @@ export class PhotoService {
     const photo = await this.photoRepository.findByPhotoId(photoId);
 
     if (!photo) {
-      throw new Error('Foto não encontrada');
+      throw new AppError('Foto não encontrada');
     }
 
     await this.fileStorage.delete(photo.filename);

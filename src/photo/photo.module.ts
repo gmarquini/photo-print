@@ -5,8 +5,10 @@ import { PhotoRepository } from '@/repositories/PhotoRepository';
 import { InMemoryPhotoRepository } from '@/repositories/InMemoryPhotoRepository';
 import { FileStorage } from '@/storage/FileStorage';
 import { LocalFileStorage } from '@/storage/LocalFileStorage';
+import { SessionModule } from '@/session/session.module';
 
 @Module({
+  imports: [SessionModule],
   controllers: [PhotoController],
   providers: [
     PhotoService,

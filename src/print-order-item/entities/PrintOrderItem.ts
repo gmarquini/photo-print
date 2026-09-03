@@ -1,5 +1,6 @@
 // Armazena os dados de cada item com suas preferências de impressão
 
+import { AppError } from '@/errors/AppError';
 import { randomUUID } from 'crypto';
 
 type PhotoSize =
@@ -34,7 +35,7 @@ export class PrintOrderItem {
     this._size = size;
 
     if (!Number.isInteger(quantity) || quantity <= 0 || quantity >= 300) {
-      throw new Error('Quantity must be a valid number');
+      throw new AppError('Quantity must be a valid number');
     }
 
     this._quantity = quantity;

@@ -36,7 +36,7 @@ Sessões
 Fotos
 
 [x] O sistema deve permitir o envio de uma ou várias fotos em uma requisição.
-[ ] O sistema deve aceitar os principais formatos de imagem utilizados em celulares.
+[x] O sistema deve aceitar os principais formatos de imagem utilizados em celulares.
 [x] O sistema deve armazenar fisicamente os arquivos enviados.
 [x] O sistema deve gerar um nome único para cada arquivo armazenado.
 [x] O sistema deve preservar o nome original do arquivo.
@@ -44,7 +44,7 @@ Fotos
 [x] O sistema deve armazenar o tamanho do arquivo.
 [x] O sistema deve gerar um identificador único para cada foto.
 [x] O sistema deve associar cada foto à sessão que realizou o upload.
-[ ] O sistema deve permitir consultar uma foto pelo seu identificador.
+[x] O sistema deve permitir consultar uma foto pelo seu identificador.
 [x] O sistema deve permitir listar as fotos de uma sessão.
 [x] O sistema deve permitir remover uma ou mais fotos de uma sessão.
 [x] Ao remover uma foto, o sistema deve remover também seu arquivo físico.

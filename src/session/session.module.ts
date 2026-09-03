@@ -13,5 +13,6 @@ import { InMemorySessionRepository } from '@/repositories/InMemorySessionReposit
       useClass: InMemorySessionRepository,
     },
   ],
+  exports: [SessionRepository],
 })
 export class SessionModule {}

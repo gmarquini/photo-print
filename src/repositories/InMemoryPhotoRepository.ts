@@ -1,12 +1,12 @@
 import { Photo } from '@/photo/entities/Photo';
 import { PhotoRepository } from './PhotoRepository';
+import { AppError } from '@/errors/AppError';
 
 export class InMemoryPhotoRepository implements PhotoRepository {
   private photos: Photo[] = [];
 
   async create(photo: Photo): Promise<Photo> {
     this.photos.push(photo);
-    console.log(this.photos);
 
     return Promise.resolve(photo);
   }
@@ -29,7 +29,7 @@ export class InMemoryPhotoRepository implements PhotoRepository {
     );
 
     if (photoIndex === -1) {
-      throw new Error('Foto não encontrada');
+      throw new AppError('Foto não encontrada');
     }
 
     this.photos.splice(photoIndex, 1);
