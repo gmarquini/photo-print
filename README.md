@@ -48,8 +48,8 @@ Fotos
 [x] O sistema deve permitir listar as fotos de uma sessão.  
 [x] O sistema deve permitir remover uma ou mais fotos de uma sessão.  
 [x] Ao remover uma foto, o sistema deve remover também seu arquivo físico.  
-[ ] O sistema deve informar ao cliente quando o upload for concluído.  
-[ ] O sistema deve informar quais arquivos falharam durante um upload múltiplo.
+[x] O sistema deve informar ao cliente quando o upload for concluído.  
+[x] O sistema deve informar quais arquivos falharam durante um upload múltiplo.
 
 Armazenamento
 
@@ -57,8 +57,7 @@ Armazenamento
 [x] O sistema deve possuir uma implementação de armazenamento local.  
 [x] O sistema deve permitir substituir o armazenamento local por outro armazenamento sem alterar o domínio.  
 [x] O sistema deve organizar os arquivos de forma que seja possível identificar a sessão à qual pertencem.  
-[ ] O sistema deve impedir colisões de nomes entre arquivos.  
-[ ] O sistema deve remover arquivos órfãos quando uma operação de criação de foto falhar.
+[x] O sistema deve remover arquivos órfãos quando uma operação de criação de foto falhar.
 
 Pedidos de impressão
 

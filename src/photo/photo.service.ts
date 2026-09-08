@@ -32,10 +32,10 @@ export class PhotoService {
         });
         const createdPhoto = await this.photoRepository.create(photo);
         photos.push(createdPhoto);
-      } catch (error) {
+      } catch {
         await this.fileStorage.delete(filename); // Se algo falhar, o arquivo é removido.
 
-        throw error;
+        throw new AppError(`Falha ao enviar o arquivo ${filename}`);
       }
     }
     return photos;

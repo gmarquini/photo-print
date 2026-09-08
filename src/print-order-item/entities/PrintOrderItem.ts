@@ -1,9 +1,9 @@
-// Armazena os dados de cada item com suas preferências de impressão
+// Armazena os dados de uma foto com suas preferências de impressão
 
 import { AppError } from '@/errors/AppError';
 import { randomUUID } from 'crypto';
 
-type PhotoSize =
+export type PhotoSize =
   | '10x15'
   | '13x18'
   | '15x20'
@@ -14,21 +14,25 @@ type PhotoSize =
   | '30x38'
   | '28x35';
 
-type PaperType = 'matte' | 'glossy';
+export type PaperType = 'glossy' | 'matte';
 // matte é fosco, glossy é brilhante.
+
+export type PhotoDate = boolean;
 
 export class PrintOrderItem {
   private readonly _id: string;
   private readonly _photoId: string;
-  private readonly _size: PhotoSize;
-  private readonly _quantity: number;
-  private readonly _paperType: PaperType;
+  private _size: PhotoSize;
+  private _quantity: number;
+  private _paperType: PaperType;
+  private _photoDate: PhotoDate;
 
   constructor(
     photoId: string,
     size: PhotoSize,
     quantity: number = 1,
-    paperType: PaperType,
+    paperType: PaperType = 'glossy',
+    photoDate: PhotoDate = false,
   ) {
     this._id = randomUUID();
     this._photoId = photoId;
@@ -40,6 +44,7 @@ export class PrintOrderItem {
 
     this._quantity = quantity;
     this._paperType = paperType;
+    this._photoDate = photoDate;
   }
 
   get id() {
@@ -56,5 +61,8 @@ export class PrintOrderItem {
   }
   get paperType() {
     return this._paperType;
+  }
+  get photoDate() {
+    return this._photoDate;
   }
 }
