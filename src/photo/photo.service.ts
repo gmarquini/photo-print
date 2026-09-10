@@ -13,7 +13,7 @@ export class PhotoService {
     private readonly fileStorage: FileStorage,
   ) {}
   async create(sessionId: string, files: Express.Multer.File[]) {
-    const session = this.sessionRepositoy.findById(sessionId);
+    const session = await this.sessionRepositoy.findById(sessionId);
 
     if (session === null) {
       throw new AppError('Sessão não encontrada.');

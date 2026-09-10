@@ -16,7 +16,7 @@ Envia pedido para impressão
 ↓
 Loja faz download dos arquivos
 
-## requisitos não funcionais
+## requisitos funcionais
 
 Os arquivos de imagem devem ser feito upload através de multipart/form-data
 
@@ -61,18 +61,19 @@ Armazenamento
 
 Pedidos de impressão
 
-[ ] O cliente deve poder selecionar uma foto para impressão.  
-[ ] O cliente deve poder escolher o tamanho da impressão.  
-[ ] O cliente deve poder escolher a quantidade de cópias.  
-[ ] O cliente deve poder escolher o tipo de papel.  
-[ ] O sistema deve permitir papel fosco (matte).  
-[ ] O sistema deve permitir papel brilhante (glossy).  
-[ ] O sistema deve criar um PrintOrderItem para cada configuração de impressão.  
-[ ] O sistema deve permitir que uma mesma foto tenha configurações de impressão diferentes.  
-[ ] O sistema deve permitir várias cópias de uma mesma foto.  
-[ ] O sistema deve associar cada item de impressão à foto correspondente.  
+[x] O cliente deve poder selecionar uma foto para impressão.  
+[x] O cliente deve poder escolher o tamanho da impressão.  
+[x] O cliente deve poder escolher a quantidade de cópias.  
+[x] O cliente deve poder escolher o tipo de papel.  
+[x] O sistema deve permitir papel fosco (matte).  
+[x] O sistema deve permitir papel brilhante (glossy).  
+[x] O sistema deve permitir adicionar data na foto.  
+[x] O sistema deve criar um PrintOrderItem para cada configuração de impressão.  
+[x] O sistema deve permitir que uma mesma foto tenha configurações de impressão diferentes.  
+[x] O sistema deve permitir várias cópias de uma mesma foto.  
+[x] O sistema deve associar cada item de impressão à foto correspondente.  
 [ ] O sistema deve permitir revisar o pedido antes de enviá-lo.  
-[ ] O cliente deve poder enviar o pedido para impressão.  
+[x] O cliente deve poder enviar o pedido para impressão.  
 [ ] O sistema deve gerar um identificador único para o pedido.  
 [ ] O sistema deve registrar o status do pedido.  
 [ ] O sistema deve permitir consultar o pedido.  
@@ -166,6 +167,7 @@ Infraestrutura
 [ ] O banco de dados deve possuir mecanismo de persistência adequado.  
 [ ] O sistema deve possuir estratégia de backup das fotos.  
 [ ] O sistema deve possuir estratégia de backup do banco de dados.
+[ ] Para adiionar data na foto, deve ser usada a biblioteca Sharp.
 
 ## Regras de negócio
 

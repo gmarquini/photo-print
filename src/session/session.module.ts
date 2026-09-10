@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { SessionController } from './session.controller';
 import { SessionService } from './session.service';
 import { SessionRepository } from '@/repositories/SessionRepository';
-import { InMemorySessionRepository } from '@/repositories/InMemorySessionRepository';
+import { InMemorySessionRepository } from '@/repositories/inMemoryRepositories/InMemorySessionRepository';
 
 @Module({
   controllers: [SessionController],
