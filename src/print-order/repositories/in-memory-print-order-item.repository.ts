@@ -1,5 +1,5 @@
 import { PrintOrderItem } from '@/print-order-item/entities/PrintOrderItem';
-import { PrintOrderItemRepository } from '../PrintOrderItemRepository';
+import { PrintOrderItemRepository } from '@/print-order/domain/print-order-item.repository';
 import { AppError } from '@/errors/AppError';
 
 export class InMemoryPrintOrderItemRepository implements PrintOrderItemRepository {

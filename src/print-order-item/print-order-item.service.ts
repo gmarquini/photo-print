@@ -1,10 +1,10 @@
-import { PrintOrderItemRepository } from '@/repositories/PrintOrderItemRepository';
+import { PrintOrderItemRepository } from '@/print-order-item/domain/print-order-item.repository';
 import { Injectable } from '@nestjs/common';
 import {
   PaperType,
   PhotoSize,
   PrintOrderItem,
-} from './entities/PrintOrderItem';
+} from '@/print-order-item/domain/print-order-item.entity';
 import { AppError } from '@/errors/AppError';
 
 @Injectable()

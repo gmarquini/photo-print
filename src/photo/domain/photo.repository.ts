@@ -1,4 +1,4 @@
-import { Photo } from '@/photo/entities/Photo';
+import { Photo } from '@/photo/domain/photo.entity';
 
 export abstract class PhotoRepository {
   abstract create(photo: Photo): Promise<Photo>;

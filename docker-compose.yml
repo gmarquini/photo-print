@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: photo-print-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: photo-print
+    ports:
+      - '5432:5432'
+    volumes:
+      - photo_print_data:/var/lib/postgresql/data
+
+volumes:
+  photo_print_data:

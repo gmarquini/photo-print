@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { SessionController } from './session.controller';
 import { SessionService } from './session.service';
-import { SessionRepository } from '@/repositories/SessionRepository';
-import { InMemorySessionRepository } from '@/repositories/inMemoryRepositories/InMemorySessionRepository';
+import { SessionRepository } from '@/session/domain/session.repository';
+import { PrismaSessionRepository } from './repositories/prisma-session.repository';
 
 @Module({
   controllers: [SessionController],
@@ -10,7 +10,7 @@ import { InMemorySessionRepository } from '@/repositories/inMemoryRepositories/I
     SessionService,
     {
       provide: SessionRepository,
-      useClass: InMemorySessionRepository,
+      useClass: PrismaSessionRepository,
     },
   ],
   exports: [SessionRepository],

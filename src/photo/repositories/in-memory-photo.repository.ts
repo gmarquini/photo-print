@@ -1,5 +1,5 @@
-import { Photo } from '@/photo/entities/Photo';
-import { PhotoRepository } from '../PhotoRepository';
+import { Photo } from '@/photo/domain/photo.entity';
+import { PhotoRepository } from '@/photo/domain/photo.repository';
 import { AppError } from '@/errors/AppError';
 
 export class InMemoryPhotoRepository implements PhotoRepository {

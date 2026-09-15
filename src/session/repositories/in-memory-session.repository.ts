@@ -1,5 +1,5 @@
-import { Session } from '@/session/entities/Session';
-import { SessionRepository } from '../SessionRepository';
+import { Session } from '@/session/domain/session.entity';
+import { SessionRepository } from '@/session/domain/session.repository';
 
 export class InMemorySessionRepository implements SessionRepository {
   private readonly sessions: Session[] = [];

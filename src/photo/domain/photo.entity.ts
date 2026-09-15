@@ -4,7 +4,7 @@ interface PhotoProps {
   sessionId: string;
   filename: string;
   mimetype: string;
-  size: number;
+  fileSize: number;
 }
 
 export class Photo {
@@ -14,15 +14,15 @@ export class Photo {
 
   private _filename: string;
   private _mimetype: string;
-  private _size: number;
+  private _fileSize: number;
 
-  constructor({ sessionId, filename, mimetype, size }: PhotoProps) {
+  constructor({ sessionId, filename, mimetype, fileSize }: PhotoProps) {
     this._sessionId = sessionId;
     this._id = randomUUID();
     this._createdAt = new Date();
     this._filename = filename;
     this._mimetype = mimetype;
-    this._size = size;
+    this._fileSize = fileSize;
   }
 
   get id() {
@@ -34,8 +34,8 @@ export class Photo {
   get mimetype() {
     return this._mimetype;
   }
-  get size() {
-    return this._size;
+  get fileSize() {
+    return this._fileSize;
   }
   get sessionId() {
     return this._sessionId;
