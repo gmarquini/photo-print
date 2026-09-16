@@ -1,14 +1,57 @@
+import { PrismaService } from '@/prisma/prisma.service';
 import { Session } from '../domain/session.entity';
 import { SessionRepository } from '../domain/session.repository';
+import { PrismaSessionMapper } from '../mappers/session.mapper';
 
-export class PrismaSessionRepository implements SessionRepository {
-  create(session: Session): Promise<Session> {
-    throw new Error('Method not implemented.');
+export class PrismaSessionRepository extends SessionRepository {
+  constructor(private readonly prisma: PrismaService) {
+    super();
   }
-  findById(sessionId: string): Promise<Session | null> {
-    throw new Error('Method not implemented.');
+  async create(session: Session): Promise<Session> {
+    const data = await this.prisma.session.create({
+      data: {
+        id: session.id,
+        status: session.status,
+        createdAt: session.createdAt,
+        finishedAt: session.finishedAt,
+      },
+    });
+
+    return PrismaSessionMapper.toDomain(data);
   }
-  finish(sessionId: string): Promise<void> {
-    throw new Error('Method not implemented.');
+  async findById(sessionId: string): Promise<Session | null> {
+    const data = await this.prisma.session.findUnique({
+      where: {
+        id: sessionId,
+      },
+    });
+
+    if (!data) {
+      return null;
+    }
+
+    return PrismaSessionMapper.toDomain(data);
+  }
+
+  async finish(sessionId: string): Promise<Session> {
+    const data = await this.prisma.session.update({
+      where: {
+        id: sessionId,
+      },
+      data: {
+        status: 'finished',
+        finishedAt: new Date(),
+      },
+    });
+
+    return PrismaSessionMapper.toDomain(data);
+  }
+
+  async delete(sessionId: string): Promise<void> {
+    await this.prisma.session.delete({
+      where: {
+        id: sessionId,
+      },
+    });
   }
 }

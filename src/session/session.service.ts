@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { Session } from './entities/Session';
-import { SessionRepository } from '@/repositories/SessionRepository';
+import { Session } from './domain/session.entity';
+import { SessionRepository } from './domain/session.repository';
+import { AppError } from '@/errors/AppError';
 
 @Injectable()
 export class SessionService {
@@ -15,8 +16,17 @@ export class SessionService {
   }
 
   async finish(sessionId: string) {
-    await this.sessionRepository.finish(sessionId);
+    const session = await this.sessionRepository.finish(sessionId);
 
-    return;
+    return session;
+  }
+
+  async delete(sessionId: string) {
+    try {
+      await this.sessionRepository.delete(sessionId);
+      return;
+    } catch {
+      throw new AppError('Sessão não encontrada.');
+    }
   }
 }

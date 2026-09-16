@@ -1,14 +1,24 @@
 import { randomUUID } from 'crypto';
 
+type SessionStatus = 'active' | 'finished';
+
+export interface SessionProps {
+  status: SessionStatus;
+  createdAt: Date;
+  finishedAt: Date | null;
+}
+
 export class Session {
   private readonly _id: string;
-  private _status: 'active' | 'finished' = 'active';
-  private readonly _createdAt: Date;
-  private _finishedAt: Date | null = null;
+  private props: SessionProps;
 
-  constructor() {
-    this._id = randomUUID();
-    this._createdAt = new Date();
+  constructor(props?: Partial<SessionProps>, id?: string) {
+    this._id = id ?? randomUUID();
+    this.props = {
+      status: props?.status ?? 'active',
+      createdAt: props?.createdAt ?? new Date(),
+      finishedAt: props?.finishedAt ?? null,
+    };
   }
 
   get id() {
@@ -16,20 +26,23 @@ export class Session {
   }
 
   get status() {
-    return this._status;
+    return this.props.status;
   }
 
   get createdAt() {
-    return this._createdAt;
+    return this.props.createdAt;
   }
 
   get finishedAt() {
-    return this._finishedAt;
+    return this.props.finishedAt;
   }
 
   finish() {
-    if (this._status === 'finished') {
-      this._finishedAt = new Date();
+    if (this.props.status === 'finished') {
+      return;
     }
+
+    this.props.status = 'finished';
+    this.props.finishedAt = new Date();
   }
 }

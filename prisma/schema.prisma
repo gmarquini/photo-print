@@ -37,7 +37,7 @@ model Photo {
   sessionId String
   createdAt DateTime @default(now()) @map("created_at")
 
-  session         Session          @relation(fields: [sessionId], references: [id])
+  session         Session          @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   printOrderItems PrintOrderItem[]
 }
 
@@ -55,7 +55,7 @@ model PrintOrderItem {
   showDate  Boolean
   createdAt DateTime  @default(now()) @map("created_at")
 
-  photo        Photo      @relation(fields: [photoId], references: [id])
+  photo        Photo      @relation(fields: [photoId], references: [id], onDelete: Cascade)
   printOrder   PrintOrder @relation(fields: [printOrderId], references: [id])
   printOrderId String
 }
@@ -73,7 +73,7 @@ model PrintOrder {
   status          OrderStatus      @default(pending)
   sessionId       String
 
-  session Session @relation(fields: [sessionId], references: [id])
+  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 
   createdAt  DateTime  @default(now()) @map("created_at")
   finishedAt DateTime? @map("finished_at")

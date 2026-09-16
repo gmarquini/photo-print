@@ -5,9 +5,7 @@ export class InMemorySessionRepository implements SessionRepository {
   private readonly sessions: Session[] = [];
 
   async create(session: Session): Promise<Session> {
-    console.log('sessão recebida:', session);
     this.sessions.push(session);
-    console.log('Sessões armazenadas:', this.sessions);
 
     return Promise.resolve(session);
   }
