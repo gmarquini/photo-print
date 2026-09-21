@@ -2,6 +2,9 @@ import { Session } from '@/session/domain/session.entity';
 import { SessionRepository } from '@/session/domain/session.repository';
 
 export class InMemorySessionRepository implements SessionRepository {
+  index(): Promise<Session[]> {
+    throw new Error('Method not implemented.');
+  }
   private readonly sessions: Session[] = [];
 
   async create(session: Session): Promise<Session> {
@@ -17,13 +20,20 @@ export class InMemorySessionRepository implements SessionRepository {
     return session ?? null;
   }
 
-  async finish(sessionId: string) {
+  async update(session: Session): Promise<Session> {
     const sessionIndex = this.sessions.findIndex(
-      (session) => session.id === sessionId,
+      (session) => session.id === session.id,
     );
 
-    this.sessions[sessionIndex].finish();
+    const updatedSession = (this.sessions[sessionIndex] = session);
 
-    return;
+    return updatedSession;
+  }
+
+  async delete(sessionId: string) {
+    const index = this.sessions.findIndex(
+      (session) => session.id === sessionId,
+    );
+    this.sessions.splice(index, 1);
   }
 }

@@ -24,6 +24,7 @@ export class PhotoController {
       fileFilter: (req, file, callback) => {
         const allowedMimeTypes = [
           'image/jpeg',
+          'image/jpg',
           'image/png',
           'image/heic',
           'image/webp',
@@ -61,10 +62,7 @@ export class PhotoController {
   }
 
   @Delete(':sessionId/photos/:photoId')
-  remove(
-    @Param('sessionId') sessionId: string,
-    @Param('photoId') photoId: string,
-  ) {
-    return this.photoService.remove(sessionId, photoId);
+  remove(@Param('photoId') photoId: string) {
+    return this.photoService.remove(photoId);
   }
 }

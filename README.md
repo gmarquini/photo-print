@@ -26,6 +26,7 @@ Sessões
 
 [x] O sistema deve permitir que um cliente crie uma nova sessão de envio.  
 [x] O sistema deve gerar um identificador único para cada sessão.  
+[x] O sistema deve permitir listar todas as sessões.  
 [x] O sistema deve registrar a data e hora de criação da sessão.  
 [x] O sistema deve permitir consultar uma sessão pelo seu identificador.  
 [x] O sistema deve rejeitar operações realizadas com um identificador de sessão inexistente.  
@@ -58,6 +59,7 @@ Armazenamento
 [x] O sistema deve permitir substituir o armazenamento local por outro armazenamento sem alterar o domínio.  
 [x] O sistema deve organizar os arquivos de forma que seja possível identificar a sessão à qual pertencem.  
 [x] O sistema deve remover arquivos órfãos quando uma operação de criação de foto falhar.
+[ ] O sistema deve remover os arquivos físicos das fotos quando suas respectivas sessões foram apagadas. // TODO:
 
 Pedidos de impressão
 
@@ -72,12 +74,13 @@ Pedidos de impressão
 [x] O sistema deve permitir que uma mesma foto tenha configurações de impressão diferentes.  
 [x] O sistema deve permitir várias cópias de uma mesma foto.  
 [x] O sistema deve associar cada item de impressão à foto correspondente.  
-[ ] O sistema deve permitir revisar o pedido antes de enviá-lo.  
+[x] O sistema deve permitir revisar o pedido antes de enviá-lo.  
 [x] O cliente deve poder enviar o pedido para impressão.  
-[ ] O sistema deve gerar um identificador único para o pedido.  
-[ ] O sistema deve registrar o status do pedido.  
-[ ] O sistema deve permitir consultar o pedido.  
-[ ] O sistema deve permitir listar os itens de um pedido.
+[x] O sistema deve gerar um identificador único para o pedido.  
+[x] O sistema deve registrar o status do pedido.  
+[x] O sistema deve permitir consultar o pedido.  
+[x] O sistema deve permitir listar os itens de um pedido.  
+[x] O sistema deve permitir atualizar os itens de um pedido.
 
 Processamento do pedido
 

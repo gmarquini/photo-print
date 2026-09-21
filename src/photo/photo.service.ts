@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { Photo } from './entities/Photo';
-import { PhotoRepository } from '@/repositories/PhotoRepository';
+import { Photo } from './domain/photo.entity';
+import { PhotoRepository } from '@/photo/domain/photo.repository';
 import { FileStorage } from '@/storage/FileStorage';
-import { SessionRepository } from '@/repositories/SessionRepository';
+import { SessionRepository } from '@/session/domain/session.repository';
 import { AppError } from '@/errors/AppError';
 
 @Injectable()
@@ -28,13 +28,12 @@ export class PhotoService {
           sessionId,
           filename,
           mimetype: file.mimetype,
-          size: file.size,
+          fileSize: file.size,
         });
         const createdPhoto = await this.photoRepository.create(photo);
         photos.push(createdPhoto);
       } catch {
         await this.fileStorage.delete(filename); // Se algo falhar, o arquivo é removido.
-
         throw new AppError(`Falha ao enviar o arquivo ${filename}`);
       }
     }
@@ -43,7 +42,6 @@ export class PhotoService {
 
   async getPhotoById(sessionId: string, photoId: string): Promise<Photo> {
     const session = await this.sessionRepositoy.findById(sessionId);
-    console.log(session);
 
     if (!session) {
       throw new AppError('Sessão não encontrada');
@@ -70,7 +68,7 @@ export class PhotoService {
     return photos;
   }
 
-  async remove(sessionId: string, photoId: string) {
+  async remove(photoId: string) {
     const photo = await this.photoRepository.findByPhotoId(photoId);
 
     if (!photo) {
@@ -78,7 +76,7 @@ export class PhotoService {
     }
 
     await this.fileStorage.delete(photo.filename);
-    await this.photoRepository.delete(sessionId, photoId);
+    await this.photoRepository.delete(photoId);
 
     return;
   }

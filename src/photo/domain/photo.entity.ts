@@ -5,42 +5,40 @@ interface PhotoProps {
   filename: string;
   mimetype: string;
   fileSize: number;
+  createdAt?: Date;
 }
 
 export class Photo {
   private readonly _id: string;
-  private readonly _sessionId: string;
-  private readonly _createdAt: Date;
+  private props: PhotoProps;
 
-  private _filename: string;
-  private _mimetype: string;
-  private _fileSize: number;
-
-  constructor({ sessionId, filename, mimetype, fileSize }: PhotoProps) {
-    this._sessionId = sessionId;
-    this._id = randomUUID();
-    this._createdAt = new Date();
-    this._filename = filename;
-    this._mimetype = mimetype;
-    this._fileSize = fileSize;
+  constructor(props: PhotoProps, id?: string) {
+    this._id = id ?? randomUUID();
+    this.props = {
+      sessionId: props.sessionId,
+      createdAt: props.createdAt ?? new Date(),
+      filename: props.filename,
+      fileSize: props.fileSize,
+      mimetype: props.mimetype,
+    };
   }
 
   get id() {
     return this._id;
   }
   get filename() {
-    return this._filename;
+    return this.props.filename;
   }
   get mimetype() {
-    return this._mimetype;
+    return this.props.mimetype;
   }
   get fileSize() {
-    return this._fileSize;
+    return this.props.fileSize;
   }
   get sessionId() {
-    return this._sessionId;
+    return this.props.sessionId;
   }
   get createdAt() {
-    return this._createdAt;
+    return this.props.createdAt;
   }
 }

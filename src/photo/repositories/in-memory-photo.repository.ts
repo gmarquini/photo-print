@@ -23,10 +23,8 @@ export class InMemoryPhotoRepository implements PhotoRepository {
     return photo ?? null;
   }
 
-  async delete(sessionId: string, photoId: string) {
-    const photoIndex = this.photos.findIndex(
-      (photo) => photo.id === photoId && photo.sessionId === sessionId,
-    );
+  async delete(photoId: string) {
+    const photoIndex = this.photos.findIndex((photo) => photo.id === photoId);
 
     if (photoIndex === -1) {
       throw new AppError('Foto não encontrada');

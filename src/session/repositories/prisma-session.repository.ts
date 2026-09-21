@@ -2,7 +2,9 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { Session } from '../domain/session.entity';
 import { SessionRepository } from '../domain/session.repository';
 import { PrismaSessionMapper } from '../mappers/session.mapper';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class PrismaSessionRepository extends SessionRepository {
   constructor(private readonly prisma: PrismaService) {
     super();
@@ -33,14 +35,20 @@ export class PrismaSessionRepository extends SessionRepository {
     return PrismaSessionMapper.toDomain(data);
   }
 
-  async finish(sessionId: string): Promise<Session> {
+  async index(): Promise<Session[]> {
+    const sessions = await this.prisma.session.findMany();
+
+    return sessions.map((session) => PrismaSessionMapper.toDomain(session));
+  }
+
+  async update(session: Session): Promise<Session> {
     const data = await this.prisma.session.update({
       where: {
-        id: sessionId,
+        id: session.id,
       },
       data: {
-        status: 'finished',
-        finishedAt: new Date(),
+        status: session.status,
+        finishedAt: session.finishedAt,
       },
     });
 

@@ -1,18 +1,18 @@
-import { InMemoryPhotoRepository } from '@/repositories/inMemoryRepositories/InMemoryPhotoRepository';
 import { Module } from '@nestjs/common';
-import { PhotoController } from './photo.controller';
 import { PhotoService } from './photo.service';
-import { PhotoRepository } from '@/repositories/PhotoRepository';
 import { FileStorage } from '@/storage/FileStorage';
-import { LocalFileStorage } from '@/storage/LocalFileStorage';
+import { PhotoController } from './photo.controller';
 import { SessionModule } from '@/session/session.module';
+import { LocalFileStorage } from '@/storage/LocalFileStorage';
+import { PhotoRepository } from '@/photo/domain/photo.repository';
+import { PrismaPhotoRepository } from './repositories/prisma-photo.repository';
 
 @Module({
   imports: [SessionModule],
   controllers: [PhotoController],
   providers: [
     PhotoService,
-    { provide: PhotoRepository, useClass: InMemoryPhotoRepository },
+    { provide: PhotoRepository, useClass: PrismaPhotoRepository },
     { provide: FileStorage, useClass: LocalFileStorage },
   ],
 })

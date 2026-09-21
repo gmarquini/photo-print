@@ -11,14 +11,41 @@ export class SessionService {
     const session = new Session();
 
     const newSession = await this.sessionRepository.create(session);
-
     return newSession;
   }
 
-  async finish(sessionId: string) {
-    const session = await this.sessionRepository.finish(sessionId);
+  async index() {
+    const sessions = await this.sessionRepository.index();
+
+    return sessions;
+  }
+
+  async show(sessionId: string) {
+    const session = await this.sessionRepository.findById(sessionId);
+
+    if (!session) {
+      throw new AppError('Sessão não encontrada.');
+    }
 
     return session;
+  }
+
+  async finish(sessionId: string) {
+    const session = await this.sessionRepository.findById(sessionId);
+
+    if (!session) {
+      throw new AppError('Sessão não encontrada');
+    }
+
+    session.finish();
+
+    const finishedSession = await this.sessionRepository.update(session);
+
+    if (!finishedSession) {
+      throw new AppError('Não foi possível finalizar a sessão');
+    }
+
+    return finishedSession;
   }
 
   async delete(sessionId: string) {

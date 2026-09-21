@@ -2,6 +2,6 @@ import { Module } from '@nestjs/common';
 import { PrintOrderController } from './print-order.controller';
 
 @Module({
-  controllers: [PrintOrderController]
+  controllers: [PrintOrderController],
 })
 export class PrintOrderModule {}
