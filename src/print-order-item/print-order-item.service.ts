@@ -17,15 +17,15 @@ export class PrintOrderItemService {
     size: PhotoSize,
     quantity: number,
     paperType: PaperType,
-    photoDate: boolean,
+    showDate: boolean,
   ) {
-    const printOrderItem = new PrintOrderItem(
+    const printOrderItem = new PrintOrderItem({
       photoId,
       size,
       quantity,
       paperType,
-      photoDate,
-    );
+      showDate,
+    });
     const createdPrintOrderItem =
       await this.printOrderItemRepository.create(printOrderItem);
 

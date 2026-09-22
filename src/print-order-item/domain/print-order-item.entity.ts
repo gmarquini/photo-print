@@ -19,50 +19,69 @@ export type PaperType = 'glossy' | 'matte';
 
 export type PhotoDate = boolean;
 
+export type PrintOrderItemProps = {
+  photoId: string;
+  size: PhotoSize;
+  quantity: number;
+  paperType: PaperType;
+  showDate: PhotoDate;
+  createdAt: Date;
+};
+
+type CreatePrintOrderItemProps = {
+  photoId: string;
+  size?: PhotoSize;
+  quantity?: number;
+  paperType?: PaperType;
+  showDate?: PhotoDate;
+  createdAt?: Date;
+};
+
 export class PrintOrderItem {
   private readonly _id: string;
-  private readonly _photoId: string;
-  private _size: PhotoSize;
-  private _quantity: number;
-  private _paperType: PaperType;
-  private _photoDate: PhotoDate;
+  private props: PrintOrderItemProps;
 
-  constructor(
-    photoId: string,
-    size: PhotoSize,
-    quantity: number = 1,
-    paperType: PaperType = 'glossy',
-    photoDate: PhotoDate = false,
-  ) {
-    this._id = randomUUID();
-    this._photoId = photoId;
-    this._size = size;
+  constructor(props: CreatePrintOrderItemProps, id?: string) {
+    this._id = id ?? randomUUID();
 
-    if (!Number.isInteger(quantity) || quantity <= 0 || quantity >= 300) {
+    if (
+      !props.quantity ||
+      !Number.isInteger(props.quantity) ||
+      props.quantity <= 0 ||
+      props.quantity >= 200
+    ) {
       throw new AppError('Quantity must be a valid number');
     }
 
-    this._quantity = quantity;
-    this._paperType = paperType;
-    this._photoDate = photoDate;
+    this.props = {
+      photoId: props.photoId,
+      size: props.size ?? '10x15',
+      quantity: props.quantity ?? 1,
+      paperType: props.paperType ?? 'glossy',
+      showDate: props.showDate ?? false,
+      createdAt: props.createdAt ?? new Date(),
+    };
   }
 
   get id() {
     return this._id;
   }
-  get photo() {
-    return this._photoId;
-  }
   get size() {
-    return this._size;
+    return this.props.size;
+  }
+  get photoId() {
+    return this.props.photoId;
+  }
+  get photoSize() {
+    return this.props.size;
   }
   get quantity() {
-    return this._quantity;
+    return this.props.quantity;
   }
   get paperType() {
-    return this._paperType;
+    return this.props.paperType;
   }
-  get photoDate() {
-    return this._photoDate;
+  get showDate() {
+    return this.props.showDate;
   }
 }

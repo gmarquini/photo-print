@@ -2,10 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { Session } from './domain/session.entity';
 import { SessionRepository } from './domain/session.repository';
 import { AppError } from '@/errors/AppError';
+import { PhotoRepository } from '@/photo/domain/photo.repository';
+import { FileStorage } from '@/storage/FileStorage';
 
 @Injectable()
 export class SessionService {
-  constructor(private readonly sessionRepository: SessionRepository) {}
+  constructor(
+    private readonly sessionRepository: SessionRepository,
+    private readonly photoRepository: PhotoRepository,
+    private readonly fileStorage: FileStorage,
+  ) {}
 
   async create() {
     const session = new Session();
@@ -49,11 +55,12 @@ export class SessionService {
   }
 
   async delete(sessionId: string) {
-    try {
-      await this.sessionRepository.delete(sessionId);
-      return;
-    } catch {
-      throw new AppError('Sessão não encontrada.');
+    const photos = await this.photoRepository.findBySessionId(sessionId);
+
+    for (const photo of photos) {
+      await this.fileStorage.delete(photo.filename);
     }
+
+    await this.sessionRepository.delete(sessionId);
   }
 }

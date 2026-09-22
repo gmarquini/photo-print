@@ -1,6 +1,6 @@
 import { randomUUID } from 'crypto'; //pronto
 
-type SessionStatus = 'active' | 'finished';
+type SessionStatus = 'active' | 'sent' | 'canceled' | 'finished';
 
 export interface SessionProps {
   status: SessionStatus;
@@ -37,6 +37,24 @@ export class Session {
     return this.props.finishedAt;
   }
 
+  cancel() {
+    if (this.props.status === 'canceled') {
+      return;
+    }
+
+    this.props.status = 'canceled';
+    this.props.finishedAt = new Date();
+  }
+  // Representa que o unuário enviou as fotos para a impressão.
+  send() {
+    if (this.props.status === 'sent') {
+      return;
+    }
+
+    this.props.status = 'sent';
+    this.props.finishedAt = new Date();
+  }
+  // Representa que a loja terminou este pedido.
   finish() {
     if (this.props.status === 'finished') {
       return;

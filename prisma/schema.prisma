@@ -15,16 +15,17 @@ datasource db {
 
 enum Status {
   active
+  sent
+  canceled
   finished
 }
 
 model Session {
-  id          String       @id @default(uuid())
-  status      Status       @default(active)
-  createdAt   DateTime     @default(now()) @map("created_at")
-  finishedAt  DateTime?    @map("finished_at")
-  photos      Photo[]
-  printOrders PrintOrder[]
+  id         String    @id @default(uuid())
+  status     Status    @default(active)
+  createdAt  DateTime  @default(now()) @map("created_at")
+  finishedAt DateTime? @map("finished_at")
+  photos     Photo[]
 
   @@map("session")
 }
@@ -55,26 +56,5 @@ model PrintOrderItem {
   showDate  Boolean
   createdAt DateTime  @default(now()) @map("created_at")
 
-  photo        Photo      @relation(fields: [photoId], references: [id], onDelete: Cascade)
-  printOrder   PrintOrder @relation(fields: [printOrderId], references: [id])
-  printOrderId String
-}
-
-enum OrderStatus {
-  pending
-  printing
-  canceled
-  done
-}
-
-model PrintOrder {
-  id              String           @id @default(uuid())
-  printOrderItems PrintOrderItem[]
-  status          OrderStatus      @default(pending)
-  sessionId       String
-
-  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-
-  createdAt  DateTime  @default(now()) @map("created_at")
-  finishedAt DateTime? @map("finished_at")
+  photo Photo @relation(fields: [photoId], references: [id], onDelete: Cascade)
 }

@@ -59,7 +59,7 @@ Armazenamento
 [x] O sistema deve permitir substituir o armazenamento local por outro armazenamento sem alterar o domínio.  
 [x] O sistema deve organizar os arquivos de forma que seja possível identificar a sessão à qual pertencem.  
 [x] O sistema deve remover arquivos órfãos quando uma operação de criação de foto falhar.
-[ ] O sistema deve remover os arquivos físicos das fotos quando suas respectivas sessões foram apagadas. // TODO:
+[x] O sistema deve remover os arquivos físicos das fotos quando suas respectivas sessões foram apagadas.
 
 Pedidos de impressão
 
@@ -84,12 +84,9 @@ Pedidos de impressão
 
 Processamento do pedido
 
-[ ] O pedido deve iniciar com status pending.  
-[ ] A loja deve poder alterar o pedido para printing.  
-[ ] A loja deve poder alterar o pedido para done.  
-[ ] O sistema deve disponibilizar as fotos da sessão para a loja.  
-[ ] A loja deve conseguir identificar quais fotos precisam ser impressas.  
-[ ] A loja deve conseguir visualizar tamanho, quantidade e tipo de papel de cada item.  
+[x] O sistema deve disponibilizar as fotos da sessão para a loja.  
+[x] A loja deve conseguir identificar quais fotos precisam ser impressas.  
+[x] A loja deve conseguir visualizar tamanho, quantidade e tipo de papel de cada item.  
 [ ] A loja deve conseguir baixar os arquivos necessários para impressão.
 
 Interface do cliente
