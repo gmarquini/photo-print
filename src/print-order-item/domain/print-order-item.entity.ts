@@ -28,7 +28,7 @@ export type PrintOrderItemProps = {
   createdAt: Date;
 };
 
-type CreatePrintOrderItemProps = {
+export type CreatePrintOrderItemProps = {
   photoId: string;
   size?: PhotoSize;
   quantity?: number;
@@ -43,20 +43,16 @@ export class PrintOrderItem {
 
   constructor(props: CreatePrintOrderItemProps, id?: string) {
     this._id = id ?? randomUUID();
+    const quantity = props.quantity ?? 1;
 
-    if (
-      !props.quantity ||
-      !Number.isInteger(props.quantity) ||
-      props.quantity <= 0 ||
-      props.quantity >= 200
-    ) {
+    if (!Number.isInteger(quantity) || quantity <= 0 || quantity > 200) {
       throw new AppError('Quantity must be a valid number');
     }
 
     this.props = {
       photoId: props.photoId,
       size: props.size ?? '10x15',
-      quantity: props.quantity ?? 1,
+      quantity,
       paperType: props.paperType ?? 'glossy',
       showDate: props.showDate ?? false,
       createdAt: props.createdAt ?? new Date(),

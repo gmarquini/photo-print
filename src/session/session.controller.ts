@@ -33,4 +33,14 @@ export class SessionController {
   async finish(@Param('sessionId') sessionId: string) {
     return await this.sessionService.finish(sessionId);
   }
+
+  @Patch(':sessionId/cancel')
+  async cancel(@Param('sessionId') sessionId: string) {
+    return await this.sessionService.cancel(sessionId);
+  }
+
+  @Patch(':sessionId/send')
+  async send(@Param('sessionId') sessionId: string) {
+    return await this.sessionService.send(sessionId);
+  }
 }

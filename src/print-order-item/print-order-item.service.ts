@@ -1,35 +1,36 @@
 import { PrintOrderItemRepository } from '@/print-order-item/domain/print-order-item.repository';
 import { Injectable } from '@nestjs/common';
 import {
-  PaperType,
-  PhotoSize,
+  CreatePrintOrderItemProps,
   PrintOrderItem,
 } from '@/print-order-item/domain/print-order-item.entity';
 import { AppError } from '@/errors/AppError';
+import { PhotoRepository } from '@/photo/domain/photo.repository';
+import { SessionRepository } from '@/session/domain/session.repository';
 
 @Injectable()
 export class PrintOrderItemService {
   constructor(
     private readonly printOrderItemRepository: PrintOrderItemRepository,
+    private readonly photoRepository: PhotoRepository,
+    private readonly sessionRepository: SessionRepository,
   ) {}
-  async create(
-    photoId: string,
-    size: PhotoSize,
-    quantity: number,
-    paperType: PaperType,
-    showDate: boolean,
-  ) {
-    const printOrderItem = new PrintOrderItem({
-      photoId,
-      size,
-      quantity,
-      paperType,
-      showDate,
-    });
-    const createdPrintOrderItem =
-      await this.printOrderItemRepository.create(printOrderItem);
+  async create(props: CreatePrintOrderItemProps) {
+    const photo = await this.photoRepository.findByPhotoId(props.photoId);
 
-    return createdPrintOrderItem;
+    if (!photo) {
+      throw new AppError('Foto não encontrada');
+    }
+
+    const printOrderItem = new PrintOrderItem({
+      photoId: props.photoId,
+      size: props.size,
+      quantity: props.quantity,
+      paperType: props.paperType,
+      showDate: props.showDate,
+    });
+
+    return await this.printOrderItemRepository.create(printOrderItem);
   }
 
   async findById(printOrderItemId: string) {
@@ -41,6 +42,16 @@ export class PrintOrderItemService {
     }
 
     return printOrderItem;
+  }
+
+  async index(sessionId: string) {
+    const session = await this.sessionRepository.findById(sessionId);
+
+    if (!session) {
+      throw new AppError('Sessão não encontrada');
+    }
+
+    return await this.printOrderItemRepository.findBySessionId(sessionId);
   }
 
   async delete(itemOrderItemId: string) {

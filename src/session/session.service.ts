@@ -36,6 +36,34 @@ export class SessionService {
     return session;
   }
 
+  async send(sessionId: string) {
+    const session = await this.sessionRepository.findById(sessionId);
+
+    if (!session) {
+      throw new AppError('Sessão não encontrada');
+    }
+
+    session.send();
+
+    const sentSession = await this.sessionRepository.update(session);
+
+    return sentSession;
+  }
+
+  async cancel(sessionId: string) {
+    const session = await this.sessionRepository.findById(sessionId);
+
+    if (!session) {
+      throw new AppError('Sessão não encontrada');
+    }
+
+    session.cancel();
+
+    const canceledSession = await this.sessionRepository.update(session);
+
+    return canceledSession;
+  }
+
   async finish(sessionId: string) {
     const session = await this.sessionRepository.findById(sessionId);
 

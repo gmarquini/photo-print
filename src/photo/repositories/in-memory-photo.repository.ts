@@ -27,7 +27,7 @@ export class InMemoryPhotoRepository implements PhotoRepository {
     const photoIndex = this.photos.findIndex((photo) => photo.id === photoId);
 
     if (photoIndex === -1) {
-      throw new AppError('Foto não encontrada');
+      throw new AppError('In Memory: Foto não encontrada');
     }
 
     this.photos.splice(photoIndex, 1);

@@ -3,6 +3,12 @@ import { PrintOrderItemRepository } from '@/print-order-item/domain/print-order-
 import { AppError } from '@/errors/AppError';
 
 export class InMemoryPrintOrderItemRepository implements PrintOrderItemRepository {
+  findBySessionId(sessionId: string): Promise<PrintOrderItem[]> {
+    throw new Error('Method not implemented.');
+  }
+  update(PrintOrderItem: PrintOrderItem): Promise<PrintOrderItem> {
+    throw new Error('Method not implemented.');
+  }
   private printOrderItems: PrintOrderItem[] = [];
 
   async create(printOrderItem: PrintOrderItem): Promise<PrintOrderItem> {
