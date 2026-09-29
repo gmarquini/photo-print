@@ -16,6 +16,32 @@ Envia pedido para impressão
 ↓
 Loja faz download dos arquivos
 
+## Rotas da API
+
+### Sessões
+
+- POST /sessions — cria uma nova sessão
+- GET /sessions — lista todas as sessões
+- GET /sessions/:sessionId — busca uma sessão pelo identificador
+- DELETE /sessions/:sessionId — remove uma sessão
+- PATCH /sessions/:sessionId/finish — marca uma sessão como finalizada
+- PATCH /sessions/:sessionId/cancel — marca uma sessão como cancelada
+- PATCH /sessions/:sessionId/send — marca uma sessão como enviada
+
+### Fotos
+
+- POST /sessions/:sessionId/photos — faz upload de uma ou mais fotos para a sessão (multipart/form-data, campo photo)
+- GET /sessions/:sessionId/photos — lista todas as fotos da sessão
+- GET /sessions/:sessionId/photos/:photoId — busca uma foto específica da sessão
+- DELETE /sessions/:sessionId/photos/:photoId — remove uma foto da sessão
+
+### Itens de impressão
+
+- POST /sessions/photos/:photoId/printOrders — cria um item de impressão para uma foto
+- GET /sessions/printOrders/:printOrderItemId — busca um item de impressão pelo identificador
+- GET /sessions/:sessionId/printOrders — lista os itens de impressão da sessão
+- DELETE /sessions/printOrders/:printOrderItemId — remove um item de impressão
+
 ## requisitos funcionais
 
 Os arquivos de imagem devem ser feito upload através de multipart/form-data

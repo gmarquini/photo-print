@@ -22,6 +22,10 @@ export class PrintOrderItemService {
       throw new AppError('Foto não encontrada');
     }
 
+    if (props.size) {
+      toPhotoSize(props.size);
+    }
+
     const printOrderItem = new PrintOrderItem({
       photoId: props.photoId,
       size: props.size,
@@ -31,9 +35,27 @@ export class PrintOrderItemService {
     });
 
     return await this.printOrderItemRepository.create(printOrderItem);
+
+    function toPhotoSize(size: string) {
+      if (
+        size === '10x15' ||
+        size === '13x18' ||
+        size === '15x20' ||
+        size === '20x20' ||
+        size === '13x35' ||
+        size === '50x61' ||
+        size === '40x50' ||
+        size === '30x38' ||
+        size === '28x35'
+      ) {
+        return size;
+      }
+
+      throw new AppError(`Invalid photo size: ${size}`);
+    }
   }
 
-  async findById(printOrderItemId: string) {
+  async show(printOrderItemId: string) {
     const printOrderItem =
       await this.printOrderItemRepository.findById(printOrderItemId);
 

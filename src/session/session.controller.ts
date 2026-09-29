@@ -7,20 +7,17 @@ export class SessionController {
 
   @Post()
   async create() {
-    const session = await this.sessionService.create();
-    return session;
+    return await this.sessionService.create();
   }
 
   @Get()
   async index() {
-    const sessions = await this.sessionService.index();
-    return sessions;
+    return await this.sessionService.index();
   }
 
   @Get(':sessionId')
   async show(@Param('sessionId') sessionId: string) {
-    const session = await this.sessionService.show(sessionId);
-    return session;
+    return await this.sessionService.show(sessionId);
   }
 
   @Delete(':sessionId')
