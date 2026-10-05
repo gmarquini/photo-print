@@ -1,0 +1,93 @@
+import { Injectable } from '@nestjs/common';
+import { Photo } from './domain/photo.entity';
+import { PhotoRepository } from '@/photo/domain/photo.repository';
+import { FileStorage } from '@/storage/FileStorage';
+import { SessionRepository } from '@/session/domain/session.repository';
+import { AppError } from '@/errors/AppError';
+
+@Injectable()
+export class PhotoService {
+  constructor(
+    private readonly sessionRepositoy: SessionRepository,
+    private readonly photoRepository: PhotoRepository,
+    private readonly fileStorage: FileStorage,
+  ) {}
+  async create(sessionId: string, files: Express.Multer.File[]) {
+    const session = await this.sessionRepositoy.findById(sessionId);
+
+    if (session === null) {
+      throw new AppError('Sessão não encontrada.');
+    }
+
+    const photos: Photo[] = [];
+
+    for (const file of files) {
+      const filename = await this.fileStorage.save(file);
+      try {
+        const photo = new Photo({
+          sessionId,
+          filename,
+          mimetype: file.mimetype,
+          fileSize: file.size,
+        });
+        const createdPhoto = await this.photoRepository.create(photo);
+        photos.push(createdPhoto);
+      } catch {
+        await this.fileStorage.delete(filename); // Se algo falhar, o arquivo é removido.
+        throw new AppError(`Falha ao enviar o arquivo ${filename}`);
+      }
+    }
+    return photos;
+  }
+
+  async getPhotoById(sessionId: string, photoId: string): Promise<Photo> {
+    const session = await this.sessionRepositoy.findById(sessionId);
+
+    if (!session) {
+      throw new AppError('Sessão não encontrada');
+    }
+
+    const photo = await this.photoRepository.findByPhotoId(photoId);
+
+    if (!photo) {
+      throw new AppError('Foto não encontrada');
+    }
+
+    return photo;
+  }
+
+  async getPhotosBySessionId(sessionId: string): Promise<Photo[]> {
+    const session = await this.sessionRepositoy.findById(sessionId);
+
+    if (!session) {
+      throw new AppError('Sessão não encontrada');
+    }
+
+    const photos = await this.photoRepository.findBySessionId(sessionId);
+
+    return photos;
+  }
+
+  async remove(photoId: string) {
+    const photo = await this.photoRepository.findByPhotoId(photoId);
+
+    if (!photo) {
+      throw new AppError('Foto não encontrada');
+    }
+
+    await this.fileStorage.delete(photo.filename);
+    await this.photoRepository.delete(photoId);
+
+    return;
+  }
+
+  async removeMany(sessionId: string) {
+    const photos = await this.photoRepository.findBySessionId(sessionId);
+
+    for (const photo of photos) {
+      await this.fileStorage.delete(photo.filename);
+    }
+
+    await this.photoRepository.deleteMany(sessionId);
+  }
+}
