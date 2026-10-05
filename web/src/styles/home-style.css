@@ -1,0 +1,15 @@
+.home-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+}
+
+.start-button {
+  background-color: rgb(87, 87, 199);
+  border-radius: 5px;
+  width: 30rem;
+  height: 20rem;
+  color: white;
+  font-size: 3rem;
+}

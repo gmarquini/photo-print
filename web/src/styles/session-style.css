@@ -1,0 +1,52 @@
+.session-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 90vh;
+}
+
+.photos-container {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 5rem;
+}
+
+.photo-thumbnail {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  display: block;
+}
+
+.photo-thumbnail .photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 5px 5px 5px 0px rgba(151, 151, 151, 0.349);
+}
+
+.send-button {
+  height: 4rem;
+  width: 6rem;
+  font-size: 1rem;
+  background-color: rgb(139, 139, 233);
+  color: white;
+}
+
+.delete-button {
+  padding: 3px;
+  background-color: rgb(233, 83, 83);
+  color: white;
+  width: 1.2rem;
+  height: 1.2rem;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+
+  & img {
+    height: 100%;
+    width: 100%;
+  }
+}
