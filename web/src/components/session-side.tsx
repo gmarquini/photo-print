@@ -20,12 +20,10 @@ type PrintSettings = {
   showDate: boolean;
 };
 
-type SettinsDraft = Omit<PrintSettings, "photoId">;
-
 type SessionSideProps = {
   selectedPhotosIds: string[];
   selectedCount: number;
-  onApply: (settings: PrintSettings[]) => void;
+  onApply: (draftSettings: PrintSettings[]) => void;
 };
 
 export function SessionSide({
@@ -33,7 +31,7 @@ export function SessionSide({
   selectedCount,
   onApply,
 }: SessionSideProps) {
-  const [size, setSize] = useState("10x15");
+  const [size, setSize] = useState<PhotoSize>("10x15");
   const [quantity, setQuantity] = useState(1);
   const [paperType, setPaperType] = useState<"glossy" | "matte">("glossy");
   const [showDate, setShowDate] = useState(false);
@@ -48,6 +46,22 @@ export function SessionSide({
     "28x35",
   ];
 
+  function sendInformation() {
+    if (selectedPhotosIds.length === 0) {
+      return alert("Selecione pelo menos uma foto para aplizar as mudanças");
+    }
+
+    const draftSettings = selectedPhotosIds.map((photoId) => ({
+      photoId,
+      size,
+      quantity,
+      paperType,
+      showDate,
+    }));
+
+    onApply(draftSettings);
+  }
+
   return (
     <form className="session-side">
       <p>{selectedCount} fotos selecionadas</p>
@@ -56,7 +70,7 @@ export function SessionSide({
         <label>Tamanho</label>
       </div>
       {sizes.map((sizeOption) => (
-        <label key={size} htmlFor={size} className="size-option">
+        <label key={sizeOption} htmlFor={sizeOption} className="size-option">
           <input
             type="radio"
             id={sizeOption}
@@ -65,7 +79,7 @@ export function SessionSide({
             checked={size === sizeOption}
             onChange={() => setSize(sizeOption)}
           />
-          <span>{size}</span>
+          <span>{sizeOption}</span>
         </label>
       ))}
       <div>
@@ -76,25 +90,8 @@ export function SessionSide({
             name="paperType"
             id="glossy"
             value="glossy"
-            checked={
-              selectedPhotosIds.length > 0 &&
-              selectedPhotosIds.every((photoId) =>
-                settings.some(
-                  (setting) =>
-                    setting.photoId === photoId &&
-                    setting.paperType === "glossy",
-                ),
-              )
-            }
-            onChange={() =>
-              onSettingsChange(
-                settings.map((setting) =>
-                  selectedPhotosIds.includes(setting.photoId)
-                    ? { ...setting, paperType: "glossy" }
-                    : setting,
-                ),
-              )
-            }
+            checked={paperType === "glossy"}
+            onChange={() => setPaperType("glossy")}
           />
           <span>Brilhante</span>
         </label>
@@ -104,25 +101,8 @@ export function SessionSide({
             name="paperType"
             id="matte"
             value="matte"
-            checked={
-              selectedPhotosIds.length > 0 &&
-              selectedPhotosIds.every((photoId) =>
-                settings.some(
-                  (setting) =>
-                    setting.photoId === photoId &&
-                    setting.paperType === "matte",
-                ),
-              )
-            }
-            onChange={() =>
-              onSettingsChange(
-                settings.map((setting) =>
-                  selectedPhotosIds.includes(setting.photoId)
-                    ? { ...setting, paperType: "matte" }
-                    : setting,
-                ),
-              )
-            }
+            checked={paperType === "matte"}
+            onChange={() => setPaperType("matte")}
           />
           <span>Fosco</span>
         </label>
@@ -135,23 +115,9 @@ export function SessionSide({
             type="number"
             name="quantity"
             id="quantity"
+            value={quantity}
             min={1}
-            value={
-              selectedPhotosIds.length > 0
-                ? (settings.find((setting) =>
-                    selectedPhotosIds.includes(setting.photoId),
-                  )?.quantity ?? 1)
-                : 1
-            }
-            onChange={(event) =>
-              onSettingsChange(
-                settings.map((setting) =>
-                  selectedPhotosIds.includes(setting.photoId)
-                    ? { ...setting, quantity: Number(event.target.value) }
-                    : setting,
-                ),
-              )
-            }
+            onChange={(event) => setQuantity(Number(event.target.value))}
           />
         </label>
       </div>
@@ -161,27 +127,12 @@ export function SessionSide({
         <input
           id="show-date"
           type="checkbox"
-          checked={
-            selectedPhotosIds.length > 0 &&
-            selectedPhotosIds.every((photoId) =>
-              settings.some(
-                (setting) => setting.photoId === photoId && setting.showDate,
-              ),
-            )
-          }
-          onChange={(event) =>
-            onSettingsChange(
-              settings.map((setting) =>
-                selectedPhotosIds.includes(setting.photoId)
-                  ? { ...setting, showDate: event.target.checked }
-                  : setting,
-              ),
-            )
-          }
+          checked={showDate}
+          onChange={(event) => setShowDate(event.target.checked)}
         />
       </div>
 
-      <button type="button" onClick={onApply}>
+      <button type="button" onClick={sendInformation}>
         Aplicar
       </button>
     </form>

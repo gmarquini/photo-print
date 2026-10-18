@@ -38,8 +38,6 @@ type PrintSettings = {
   showDate: boolean;
 };
 
-type SettingsDraft = Omit<PrintSettings, "photoId">;
-
 export function Session() {
   const { sessionId } = useParams();
   const [photos, setPhotos] = useState<Photo[]>([]);
@@ -64,7 +62,18 @@ export function Session() {
 
     const response = await api.get(`/sessions/${sessionId}/photos`);
 
-    setPhotos(response.data);
+    const uploadedPhotos = response.data as Photo[];
+
+    setPhotos(uploadedPhotos);
+    setSettings(
+      uploadedPhotos.map((photo) => ({
+        photoId: photo.id,
+        size: "10x15",
+        paperType: "glossy",
+        quantity: 1,
+        showDate: false,
+      })),
+    );
   }
 
   async function deletePhoto(photoId: string) {
@@ -129,16 +138,23 @@ export function Session() {
     setSelectedPhotoIds(nextSelectedIds);
   }
 
-  function applyPrintSettings() {
-    if (selectedPhotoIds.length === 0) return;
+  function applyPrintSettings(draftSettings: PrintSettings[]) {
+    setSettings((currentSettings) => {
+      const updatedSettings = currentSettings.map((setting) => {
+        const updatedSetting = draftSettings.find(
+          (draft) => draft.photoId === setting.photoId,
+        );
 
-    const newOrders: PrintOrderItem[] = selectedPhotoIds.flatMap((photoId) => {
-      const photoSettings = settings.find((item) => item.photoId === photoId);
+        return updatedSetting ?? setting;
+      });
 
-      return photoSettings ? [{ ...photoSettings, createdAt: new Date() }] : [];
+      const newSettings = draftSettings.filter(
+        (draft) =>
+          !currentSettings.some((setting) => setting.photoId === draft.photoId),
+      );
+
+      return [...updatedSettings, ...newSettings];
     });
-
-    setPrintOrders((currentOrders) => [...currentOrders, ...newOrders]);
   }
 
   useEffect(() => {
@@ -148,6 +164,19 @@ export function Session() {
       const response = await api.get(`/sessions/${sessionId}/photos`);
 
       setPhotos(response.data);
+
+      const uploadedPhotos = response.data as Photo[];
+
+      setPhotos(uploadedPhotos);
+      setSettings(
+        uploadedPhotos.map((photo) => ({
+          photoId: photo.id,
+          size: "10x15",
+          paperType: "glossy",
+          quantity: 1,
+          showDate: false,
+        })),
+      );
     }
 
     loadPhotos();
@@ -159,8 +188,6 @@ export function Session() {
       <aside className="side">
         <SessionSide
           selectedPhotosIds={selectedPhotoIds}
-          settings={settings}
-          onSettingsChange={setSettings}
           selectedCount={selectedPhotoIds.length}
           onApply={applyPrintSettings}
         />

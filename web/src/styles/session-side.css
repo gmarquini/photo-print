@@ -84,6 +84,12 @@
   color: #2d3550;
 }
 
+.session-side input[type="number"],
+input[type="radio"],
+input[type="checkbox"] {
+  cursor: pointer;
+}
+
 .session-side > div:last-of-type {
   display: flex;
   flex-direction: row;
