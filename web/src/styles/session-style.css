@@ -39,6 +39,11 @@
   text-transform: uppercase;
 }
 
+.header img {
+  width: 6rem;
+  rotate: -9deg;
+}
+
 .side {
   grid-area: side;
   align-self: start;
@@ -87,8 +92,8 @@
 
 .photo-thumbnail {
   position: relative;
-  width: 170px;
-  height: 170px;
+  width: 200px;
+  height: 200px;
   overflow: hidden;
   border-radius: 18px;
   background: var(--accent-soft);
@@ -133,18 +138,32 @@
 }
 
 .photo-thumbnail .photo-setting {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
   display: flex;
   flex-direction: column;
-  width: 3rem;
-  height: 4.2rem;
-  color: white;
-  position: relative;
-  bottom: 80px;
-  left: 10px;
-  background-color: rgb(76, 124, 255);
-  border-radius: 5px;
-  padding: 0.2rem;
-  opacity: 60%;
+  gap: 2px;
+  width: fit-content;
+}
+
+.photo-thumbnail .setting-size,
+.setting-quantity,
+.setting-papertype,
+.setting-showdate {
+  min-width: 40px;
+  padding: 3px 10px;
+
+  color: #fff;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+
+  font-size: 12px;
+  line-height: 1.4;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(6px);
 }
 
 .upload-actions {

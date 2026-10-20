@@ -1,0 +1,16 @@
+.not-found-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10rem;
+}
+
+.not-found-page > img {
+  width: 5rem;
+}
+
+.not-found-page > button {
+  width: 8rem;
+  height: 3rem;
+  background-color: rgb(245, 255, 112);
+}

@@ -30,7 +30,7 @@ export class SessionService {
     const session = await this.sessionRepository.findById(sessionId);
 
     if (!session) {
-      throw new AppError('Sessão não encontrada.');
+      throw new AppError('Sessão não encontrada.', 404);
     }
 
     return session;

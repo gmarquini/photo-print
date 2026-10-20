@@ -1,9 +1,12 @@
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { api } from "../services/api";
 import { useEffect, useState } from "react";
 import "../styles/session-style.css";
 import cancelIcon from "../assets/cancel-icon.svg";
 import { SessionSide } from "../components/session-side";
+import { Header } from "../components/header";
+import { isAxiosError } from "axios";
+import { Loading } from "../components/loading";
 
 type Photo = {
   id: string;
@@ -21,14 +24,14 @@ type PhotoSize =
   | "30x38"
   | "28x35";
 
-type PrintOrderItem = {
-  photoId: string;
-  size: PhotoSize;
-  quantity: number;
-  paperType: "glossy" | "matte";
-  showDate: boolean;
-  createdAt: Date;
-};
+// type PrintOrderItem = {
+//   photoId: string;
+//   size: PhotoSize;
+//   quantity: number;
+//   paperType: "glossy" | "matte";
+//   showDate: boolean;
+//   createdAt: Date;
+// };
 
 type PrintSettings = {
   photoId: string;
@@ -38,16 +41,62 @@ type PrintSettings = {
   showDate: boolean;
 };
 
+type SessionStatus = "checking" | "valid" | "error";
+
 export function Session() {
   const { sessionId } = useParams();
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [selectedPhotoIds, setSelectedPhotoIds] = useState<string[]>([]);
   const [settings, setSettings] = useState<PrintSettings[]>([]);
-  const [printOrder, setPrintOrders] = useState<PrintOrderItem[]>([]);
+  //const [printOrder, setPrintOrders] = useState<PrintOrderItem[]>([]);
+  const navigate = useNavigate();
+  const [sessionCheck, setSessionCheck] = useState<{
+    sessionId: string | undefined;
+    status: SessionStatus;
+  }>({ sessionId: undefined, status: "checking" });
 
   function formHandler() {
-    console.log("enviado");
+    settings.map(
+      async (setting) =>
+        await api.post(`/sessions/photos/${setting.photoId}/printOrders`),
+    );
+
+    navigate("/allDonePage");
   }
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function checkSession() {
+      if (!sessionId) {
+        setSessionCheck({ sessionId, status: "error" });
+        return;
+      }
+
+      try {
+        await api.get(`sessions/${sessionId}`);
+
+        if (!cancelled) {
+          setSessionCheck({ sessionId, status: "valid" });
+        }
+      } catch (error: unknown) {
+        if (cancelled) return;
+
+        if (isAxiosError(error) && error.response?.status === 404) {
+          navigate("/notFound", { replace: true });
+        }
+
+        console.log("Não foi possível validar a sessão");
+        setSessionCheck({ sessionId, status: "error" });
+      }
+    }
+
+    void checkSession();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [sessionId, navigate]);
 
   async function uploadPhotos(files: File[]) {
     if (!sessionId) return;
@@ -158,14 +207,19 @@ export function Session() {
   }
 
   useEffect(() => {
-    async function loadPhotos() {
-      if (!sessionId) return;
+    if (
+      !sessionId ||
+      sessionCheck.sessionId !== sessionId ||
+      sessionCheck.status !== "valid"
+    ) {
+      return;
+    }
 
+    async function loadPhotos() {
       const response = await api.get(`/sessions/${sessionId}/photos`);
+      const uploadedPhotos = response.data as Photo[];
 
       setPhotos(response.data);
-
-      const uploadedPhotos = response.data as Photo[];
 
       setPhotos(uploadedPhotos);
       setSettings(
@@ -180,10 +234,30 @@ export function Session() {
     }
 
     loadPhotos();
-  }, [sessionId]);
+  }, [sessionId, sessionCheck]);
+
+  // Carregamento da página para não mostrar conteúdo caso a sessão não exista.
+
+  if (
+    sessionCheck.sessionId !== sessionId ||
+    sessionCheck.status === "checking"
+  ) {
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
+  }
+
+  if (sessionCheck.status === "error") {
+    return <p>Não foi possível validar a sessão.</p>;
+  }
+
   return (
     <div className="session-page">
-      <header className="header">Very Very Smart Print</header>
+      <header>
+        <Header />
+      </header>
 
       <aside className="side">
         <SessionSide
@@ -227,20 +301,24 @@ export function Session() {
                     onChange={() => onTogglePhoto(photo.id)}
                   />
                   <div className="photo-setting">
-                    <small>{photoSettings?.size}</small>
-                    <br />
-                    <small>
-                      {photoSettings?.paperType === "glossy"
-                        ? "Brilhante"
-                        : "Fosco"}
-                    </small>
-                    <br />
-                    <small>{"qty:" + photoSettings?.quantity}</small>
-                    <br />
-                    <small>
-                      {photoSettings?.showDate ? "data: on" : "data: off"}
-                    </small>
-                    <br />
+                    <div className="setting-size">
+                      <small>{photoSettings?.size}</small>
+                    </div>
+                    <div className="setting-papertype">
+                      <small>
+                        {photoSettings?.paperType === "glossy"
+                          ? "Brilhante"
+                          : "Fosco"}
+                      </small>
+                    </div>
+                    <div className="setting-quantity">
+                      <small>{"Qnt:" + photoSettings?.quantity}</small>
+                    </div>
+                    <div className="setting-showdate">
+                      <small>
+                        {photoSettings?.showDate ? "data: on" : "data: off"}
+                      </small>
+                    </div>
                   </div>
                 </div>
               );
