@@ -58,7 +58,13 @@ export function Session() {
   function formHandler() {
     settings.map(
       async (setting) =>
-        await api.post(`/sessions/photos/${setting.photoId}/printOrders`),
+        await api.post(`/sessions/photos/${setting.photoId}/printOrders`, {
+          size: setting.size,
+          quantity: setting.quantity,
+          paperType: setting.paperType,
+          showDate: setting.showDate,
+        }),
+      console.log(settings),
     );
 
     navigate("/allDonePage");
@@ -193,7 +199,6 @@ export function Session() {
         const updatedSetting = draftSettings.find(
           (draft) => draft.photoId === setting.photoId,
         );
-
         return updatedSetting ?? setting;
       });
 
@@ -202,7 +207,9 @@ export function Session() {
           !currentSettings.some((setting) => setting.photoId === draft.photoId),
       );
 
-      return [...updatedSettings, ...newSettings];
+      const result = [...updatedSettings, ...newSettings];
+
+      return result;
     });
   }
 

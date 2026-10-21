@@ -41,9 +41,9 @@ export class PrintOrderItemController {
 
       return this.printOrderItemService.create({
         photoId,
+        size: data.size,
         quantity: data.quantity,
         paperType: data.paperType,
-        size: data.size,
         showDate: data.showDate,
       });
     } catch (error) {

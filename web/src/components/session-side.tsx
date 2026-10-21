@@ -48,7 +48,7 @@ export function SessionSide({
 
   function sendInformation() {
     if (selectedPhotosIds.length === 0) {
-      return alert("Selecione pelo menos uma foto para aplizar as mudanças");
+      return alert("Selecione pelo menos uma foto para aplicar as mudanças");
     }
 
     const draftSettings = selectedPhotosIds.map((photoId) => ({
@@ -58,7 +58,6 @@ export function SessionSide({
       paperType,
       showDate,
     }));
-
     onApply(draftSettings);
   }
 
