@@ -1,9 +1,11 @@
-import { randomUUID } from 'crypto'; //pronto
+import { randomWordGenerator } from '@/utils/randomWordGenerator';
+import { randomUUID } from 'crypto';
 
 type SessionStatus = 'active' | 'sent' | 'canceled' | 'finished';
 
 export interface SessionProps {
   status: SessionStatus;
+  keyword: string;
   createdAt: Date;
   finishedAt: Date | null;
 }
@@ -16,6 +18,7 @@ export class Session {
     this._id = id ?? randomUUID();
     this.props = {
       status: props?.status ?? 'active',
+      keyword: props?.keyword ?? randomWordGenerator(),
       createdAt: props?.createdAt ?? new Date(),
       finishedAt: props?.finishedAt ?? null,
     };
@@ -27,6 +30,10 @@ export class Session {
 
   get status() {
     return this.props.status;
+  }
+
+  get keyword() {
+    return this.props.keyword;
   }
 
   get createdAt() {

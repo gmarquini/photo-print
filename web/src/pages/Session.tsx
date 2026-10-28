@@ -48,7 +48,6 @@ export function Session() {
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [selectedPhotoIds, setSelectedPhotoIds] = useState<string[]>([]);
   const [settings, setSettings] = useState<PrintSettings[]>([]);
-  //const [printOrder, setPrintOrders] = useState<PrintOrderItem[]>([]);
   const navigate = useNavigate();
   const [sessionCheck, setSessionCheck] = useState<{
     sessionId: string | undefined;
@@ -56,6 +55,10 @@ export function Session() {
   }>({ sessionId: undefined, status: "checking" });
 
   function formHandler() {
+    if (settings.length <= 0) {
+      return alert("Não há fotos a serem enviadas.");
+    }
+
     settings.map(
       async (setting) =>
         await api.post(`/sessions/photos/${setting.photoId}/printOrders`, {
@@ -64,10 +67,9 @@ export function Session() {
           paperType: setting.paperType,
           showDate: setting.showDate,
         }),
-      console.log(settings),
     );
 
-    navigate("/allDonePage");
+    navigate(`/sessions/${sessionId}/allDonePage`);
   }
 
   useEffect(() => {
@@ -138,7 +140,17 @@ export function Session() {
 
     const response = await api.get(`/sessions/${sessionId}/photos`);
 
-    setPhotos(response.data);
+    // Atualizar o estado de selectedPhotos
+    const remainingPhotos = response.data as Photo[];
+    const remainingIds = new Set(remainingPhotos.map((photo) => photo.id));
+
+    setPhotos(remainingPhotos);
+    setSelectedPhotoIds((currentIds) =>
+      currentIds.filter((id) => remainingIds.has(id)),
+    );
+    setSettings((currentSettings) =>
+      currentSettings.filter((setting) => remainingIds.has(setting.photoId)),
+    );
   }
 
   function onTogglePhoto(photoId: string) {
@@ -262,9 +274,7 @@ export function Session() {
 
   return (
     <div className="session-page">
-      <header>
-        <Header />
-      </header>
+      <Header />
 
       <aside className="side">
         <SessionSide

@@ -16,14 +16,15 @@ export class SessionService {
   async create() {
     const session = new Session();
 
-    const newSession = await this.sessionRepository.create(session);
-    return newSession;
+    try {
+      return await this.sessionRepository.create(session);
+    } catch {
+      throw new AppError('Não foi possível criar uma sessão', 500);
+    }
   }
 
   async index() {
-    const sessions = await this.sessionRepository.index();
-
-    return sessions;
+    return this.sessionRepository.index();
   }
 
   async show(sessionId: string) {
@@ -45,9 +46,7 @@ export class SessionService {
 
     session.send();
 
-    const sentSession = await this.sessionRepository.update(session);
-
-    return sentSession;
+    return this.sessionRepository.update(session);
   }
 
   async cancel(sessionId: string) {
@@ -59,9 +58,7 @@ export class SessionService {
 
     session.cancel();
 
-    const canceledSession = await this.sessionRepository.update(session);
-
-    return canceledSession;
+    return this.sessionRepository.update(session);
   }
 
   async finish(sessionId: string) {

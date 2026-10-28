@@ -2,12 +2,9 @@ import { api } from "../services/api";
 import "../styles/home-style.css";
 import { useNavigate } from "react-router";
 import veryImg from "../assets/VERY.png";
-import { Loading } from "../components/loading";
-import { useEffect, useState } from "react";
 
 export function Home() {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
 
   async function createSession() {
     const response = await api.post("/sessions");
@@ -18,26 +15,36 @@ export function Home() {
     navigate(`/sessions/${sessionId}`);
   }
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
+  function ADMPermission() {
+    const password = prompt("Informe a senha, por favor");
 
-    return () => clearTimeout(timer);
-  }, []);
+    if (password !== "1234") {
+      alert("Acesso negado");
+      return;
+    }
 
-  if (isLoading) {
-    return <Loading />;
+    navigate("/admDashboard");
   }
 
   return (
-    <div className="home-page">
-      <h1>
-        Very <img src={veryImg} alt="" /> Smart Print
-      </h1>
-      <button className="start-button" onClick={createSession}>
-        Iniciar
+    <main className="home-page">
+      <section className="home-content">
+        <p className="home-eyebrow">Seus momentos, impressos</p>
+        <h1>
+          <span>Very</span>
+          <img src={veryImg} alt="" />
+          <span>Smart Print</span>
+        </h1>
+        <p className="home-description">
+          Transforme suas fotos favoritas em lembranças para guardar.
+        </p>
+        <button className="start-button" onClick={createSession}>
+          Iniciar <span aria-hidden="true">→</span>
+        </button>
+      </section>
+      <button className="for-adm-button" onClick={ADMPermission}>
+        Acesso administrativo
       </button>
-    </div>
+    </main>
   );
 }

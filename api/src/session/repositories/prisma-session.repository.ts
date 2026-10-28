@@ -14,6 +14,7 @@ export class PrismaSessionRepository extends SessionRepository {
       data: {
         id: session.id,
         status: session.status,
+        keyword: session.keyword,
         createdAt: session.createdAt,
         finishedAt: session.finishedAt,
       },
@@ -36,7 +37,9 @@ export class PrismaSessionRepository extends SessionRepository {
   }
 
   async index(): Promise<Session[]> {
-    const sessions = await this.prisma.session.findMany();
+    const sessions = await this.prisma.session.findMany({
+      orderBy: { createdAt: 'asc' },
+    });
 
     return sessions.map((session) => PrismaSessionMapper.toDomain(session));
   }

@@ -23,6 +23,7 @@ enum Status {
 model Session {
   id         String    @id @default(uuid())
   status     Status    @default(active)
+  keyword    String
   createdAt  DateTime  @default(now()) @map("created_at")
   finishedAt DateTime? @map("finished_at")
   photos     Photo[]

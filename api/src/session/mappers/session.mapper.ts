@@ -3,6 +3,7 @@ import { Session } from '../domain/session.entity';
 
 type PrismaSession = {
   status: Status;
+  keyword: string;
   createdAt: Date;
   finishedAt: Date | null;
   id: string;
@@ -13,6 +14,7 @@ export class PrismaSessionMapper {
     return new Session(
       {
         status: data.status,
+        keyword: data.keyword,
         createdAt: data.createdAt,
         finishedAt: data.finishedAt,
       },
