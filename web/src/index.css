@@ -24,3 +24,8 @@ button:hover {
 button:active {
   top: 2px;
 }
+
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}

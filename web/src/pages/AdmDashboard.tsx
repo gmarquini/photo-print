@@ -84,6 +84,7 @@ export function AdmDashboard() {
         </section>
       </section>
       <button
+        className="go-back-button"
         onClick={() => {
           navigate("/");
         }}

@@ -5,8 +5,9 @@
   position: relative;
   isolation: isolate;
   display: grid;
-  min-height: 90vh;
-  min-height: 90svh;
+  height: 100vh;
+  height: 100svh;
+  box-sizing: border-box;
   place-items: center;
   overflow: hidden;
   padding: 2rem 1.25rem;
@@ -50,6 +51,11 @@
 .admDashboard-card {
   position: relative;
   width: min(100%, 42rem);
+  max-height: 80vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   padding: clamp(2rem, 6vw, 3.75rem);
   border: 1px solid rgba(255, 255, 255, 0.9);
   border-radius: 1.75rem;
@@ -113,10 +119,12 @@
 .admDashboard-list {
   display: grid;
   gap: 0.75rem;
+  min-height: 0;
   max-height: min(50vh, 30rem);
   overflow-y: auto;
   margin-top: 2rem;
   padding-top: 1.5rem;
+  padding-right: 1rem;
   border-top: 1px solid #eceef3;
 }
 
@@ -174,6 +182,12 @@
 .admDashboard [role="alert"] {
   background: #fff3f1;
   color: #b42318;
+}
+
+.go-back-button {
+  padding: 1rem;
+  width: 5rem;
+  background-color: #eeff55;
 }
 
 @media (max-width: 480px) {

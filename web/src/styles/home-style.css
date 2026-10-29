@@ -109,7 +109,7 @@
   justify-content: center;
   gap: 0.8rem;
   overflow: hidden;
-  margin-top: 2rem;
+  margin-top: 5rem;
   border: 1px solid rgba(29, 36, 51, 0.08);
   border-radius: 999px;
   background: #f2fd4e;
@@ -144,6 +144,14 @@
 .start-button:hover {
   transform: translateY(-3px);
   box-shadow: 0 16px 30px rgba(190, 202, 44, 0.32);
+}
+
+.start-button:disabled:hover {
+  transform: translateY(0);
+}
+
+.start-button:disabled::after {
+  display: none;
 }
 
 .start-button:hover::after {

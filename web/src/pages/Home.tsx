@@ -2,17 +2,22 @@ import { api } from "../services/api";
 import "../styles/home-style.css";
 import { useNavigate } from "react-router";
 import veryImg from "../assets/VERY.png";
+import { useState } from "react";
 
 export function Home() {
   const navigate = useNavigate();
+  const [disableButton, setDisableButton] = useState(false);
 
   async function createSession() {
-    const response = await api.post("/sessions");
-    console.log(response);
-
-    const sessionId = response.data._id;
-
-    navigate(`/sessions/${sessionId}`);
+    try {
+      setDisableButton(true);
+      const response = await api.post("/sessions");
+      const sessionId = response.data._id;
+      navigate(`/sessions/${sessionId}`);
+    } catch {
+      setDisableButton(false);
+      return alert("Não foi possível criar uma sessão");
+    }
   }
 
   function ADMPermission() {
@@ -38,7 +43,12 @@ export function Home() {
         <p className="home-description">
           Transforme suas fotos favoritas em lembranças para guardar.
         </p>
-        <button className="start-button" onClick={createSession}>
+
+        <button
+          className="start-button"
+          onClick={createSession}
+          disabled={disableButton}
+        >
           Iniciar <span aria-hidden="true">→</span>
         </button>
       </section>
