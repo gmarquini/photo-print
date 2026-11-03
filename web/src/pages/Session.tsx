@@ -7,6 +7,7 @@ import { SessionSide } from "../components/session-side";
 import { Header } from "../components/header";
 import { isAxiosError } from "axios";
 import { Loading } from "../components/loading";
+import { QrCode } from "../components/qrcode";
 
 type Photo = {
   id: string;
@@ -23,15 +24,6 @@ type PhotoSize =
   | "40x50"
   | "30x38"
   | "28x35";
-
-// type PrintOrderItem = {
-//   photoId: string;
-//   size: PhotoSize;
-//   quantity: number;
-//   paperType: "glossy" | "matte";
-//   showDate: boolean;
-//   createdAt: Date;
-// };
 
 type PrintSettings = {
   photoId: string;
@@ -106,32 +98,60 @@ export function Session() {
     };
   }, [sessionId, navigate]);
 
-  async function uploadPhotos(files: File[]) {
-    if (!sessionId) return;
+  useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout>;
+    let active = true;
 
-    const formData = new FormData();
+    async function getPhotos() {
+      const response = await api.get(`/sessions/${sessionId}/photos`);
+      return response.data as Photo[];
+    }
 
-    files.forEach((file) => {
-      formData.append("photo", file);
-    });
+    async function loadPhotos() {
+      if (!active) return;
 
-    await api.post(`/sessions/${sessionId}/photos`, formData);
+      try {
+        const uploadedPhotos = await getPhotos();
+        setPhotos(uploadedPhotos);
+        if (!active) return;
 
-    const response = await api.get(`/sessions/${sessionId}/photos`);
+        setSettings((currentSettings) => {
+          const settingsIdsSet = new Set(
+            currentSettings.map((setting) => setting.photoId),
+          );
 
-    const uploadedPhotos = response.data as Photo[];
+          const newPhotos = uploadedPhotos.filter(
+            (newPhoto) => !settingsIdsSet.has(newPhoto.id),
+          );
 
-    setPhotos(uploadedPhotos);
-    setSettings(
-      uploadedPhotos.map((photo) => ({
-        photoId: photo.id,
-        size: "10x15",
-        paperType: "glossy",
-        quantity: 1,
-        showDate: false,
-      })),
-    );
-  }
+          const newSettings: PrintSettings[] = newPhotos.map((photo) => ({
+            photoId: photo.id,
+            size: "10x15",
+            paperType: "glossy",
+            quantity: 1,
+            showDate: false,
+          }));
+
+          return [...currentSettings, ...newSettings];
+        });
+      } catch (error) {
+        console.log("Erro ao buscar fotos", error);
+      }
+
+      if (active) {
+        timeoutId = setTimeout(() => {
+          loadPhotos();
+        }, 3000);
+      }
+    }
+
+    void loadPhotos();
+
+    return () => {
+      active = false;
+      clearTimeout(timeoutId);
+    };
+  }, [sessionId]);
 
   async function deletePhoto(photoId: string) {
     if (!sessionId) return;
@@ -285,85 +305,78 @@ export function Session() {
       </aside>
 
       <main className="photo-board">
-        <h1>Adicione suas fotos:</h1>
-        <button className="select-all" onClick={toggleAll}>
-          {allSelected ? "Desmarcar tudo" : "Selecionar tudo"}
-        </button>
-
-        <div className="upload-panel">
-          <div className="photos-container">
-            {photos.map((photo) => {
-              const photoSettings = settings.find(
-                (item) => item.photoId === photo.id,
-              );
-
-              return (
-                <div className="photo-thumbnail" key={photo.id}>
-                  <img
-                    className="photo"
-                    src={`http://localhost:3000/sessions/${sessionId}/photos/${photo.id}`}
-                    alt={photo.filename}
-                  />
-                  <button
-                    type="button"
-                    className="delete-button"
-                    onClick={() => deletePhoto(photo.id)}
-                  >
-                    <img src={cancelIcon} alt="" />
-                  </button>
-                  <input
-                    type="checkbox"
-                    className="photo-checkbox"
-                    checked={selectedPhotoIds.includes(photo.id)}
-                    onChange={() => onTogglePhoto(photo.id)}
-                  />
-                  <div className="photo-setting">
-                    <div className="setting-size">
-                      <small>{photoSettings?.size}</small>
-                    </div>
-                    <div className="setting-papertype">
-                      <small>
-                        {photoSettings?.paperType === "glossy"
-                          ? "Brilhante"
-                          : "Fosco"}
-                      </small>
-                    </div>
-                    <div className="setting-quantity">
-                      <small>{"Qnt:" + photoSettings?.quantity}</small>
-                    </div>
-                    <div className="setting-showdate">
-                      <small>
-                        {photoSettings?.showDate ? "data: on" : "data: off"}
-                      </small>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          <div className="upload-actions">
-            <label className="upload-button">
-              <input
-                type="file"
-                accept=".jpg, .jpeg, png, heic, webp, heif, tiff"
-                multiple
-                onChange={(event) => {
-                  if (!event.target.files) return;
-
-                  const selectedFiles = Array.from(event.target.files);
-
-                  uploadPhotos(selectedFiles);
-                }}
-              />
-              <span>Carregar fotos</span>
-            </label>
-
-            <button type="button" className="send-button" onClick={formHandler}>
-              Concluir
-            </button>
+        <div className="photo-board-heading">
+          <h1>Adicione suas fotos:</h1>
+          <div className="qrcode-container">
+            {sessionId && QrCode(sessionId)}
+            <p>Escaneie para enviar as fotos</p>
           </div>
         </div>
+
+        <div className="upload-panel">
+          <button className="select-all" onClick={toggleAll}>
+            {allSelected ? "Desmarcar tudo" : "Selecionar tudo"}
+          </button>
+          <div
+            className={`photos-container${photos.length === 0 ? " photos-container-empty" : ""}`}
+          >
+            {photos.length === 0 ? (
+              <div>Suas fotos aparecerão aqui</div>
+            ) : (
+              photos.map((photo) => {
+                const photoSettings = settings.find(
+                  (item) => item.photoId === photo.id,
+                );
+
+                return (
+                  <div className="photo-thumbnail" key={photo.id}>
+                    <img
+                      className="photo"
+                      src={`http://localhost:3000/sessions/${sessionId}/photos/${photo.id}`}
+                      alt={photo.filename}
+                    />
+                    <button
+                      type="button"
+                      className="delete-button"
+                      onClick={() => deletePhoto(photo.id)}
+                    >
+                      <img src={cancelIcon} alt="" />
+                    </button>
+                    <input
+                      type="checkbox"
+                      className="photo-checkbox"
+                      checked={selectedPhotoIds.includes(photo.id)}
+                      onChange={() => onTogglePhoto(photo.id)}
+                    />
+                    <div className="photo-setting">
+                      <div className="setting-size">
+                        <small>{photoSettings?.size}</small>
+                      </div>
+                      <div className="setting-papertype">
+                        <small>
+                          {photoSettings?.paperType === "glossy"
+                            ? "Brilhante"
+                            : "Fosco"}
+                        </small>
+                      </div>
+                      <div className="setting-quantity">
+                        <small>{"Qnt:" + photoSettings?.quantity}</small>
+                      </div>
+                      <div className="setting-showdate">
+                        <small>
+                          {photoSettings?.showDate ? "data: on" : "data: off"}
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </div>
+        <button className="send-button" onClick={formHandler}>
+          Enviar
+        </button>
       </main>
     </div>
   );

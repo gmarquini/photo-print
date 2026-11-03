@@ -6,5 +6,6 @@
     "dev": "docker compose up -d && concurrently -k -n API,WEB \"npm --prefix api run start:dev\" \"npm --prefix web run dev\"",
     "db:up": "docker compose up -d",
     "db:down": "docker compose down"
-  }
+  },
+  "dependencies": {}
 }

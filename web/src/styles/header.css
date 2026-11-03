@@ -1,0 +1,25 @@
+.header {
+  max-height: 3rem;
+  grid-area: header;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem 2rem;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: var(--shadow);
+  color: var(--accent);
+  font-size: clamp(1.4rem, 2vw, 2.15rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.header img {
+  width: 6rem;
+  rotate: -9deg;
+}
+
+.very-very-logo {
+  cursor: pointer;
+}

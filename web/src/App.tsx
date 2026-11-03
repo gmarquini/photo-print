@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router";
-import "./App.css";
 import { Home } from "./pages/Home";
 import { Session } from "./pages/Session";
 import { NotFoundPage } from "./pages/NotFound";
 import { AllDonePage } from "./pages/AllDonePage";
 import { AdmDashboard } from "./pages/AdmDashboard";
+import { MobileUploadPage } from "./pages/MobileUploadPage";
 
 function App() {
   return (
@@ -14,6 +14,10 @@ function App() {
         <Route path="/sessions/:sessionId" element={<Session />} />
         <Route path="/notFound" element={<NotFoundPage />} />
         <Route path="/admDashboard" element={<AdmDashboard />} />
+        <Route
+          path="/sessions/:sessionId/mobileUploadPage"
+          element={<MobileUploadPage />}
+        />
 
         <Route path="/*" element={<NotFoundPage />} />
         <Route

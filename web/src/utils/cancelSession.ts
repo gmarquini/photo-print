@@ -1,10 +1,14 @@
 import { api } from "../services/api";
 
-export async function cancelSession(sessionId: string) {
-  const areYouSure = confirm("Essa sessão será cancelada. Deseja fazer isso?");
+export async function cancelSession(
+  sessionId: string,
+  message: string,
+): Promise<boolean> {
+  const areYouSure = confirm(`${message}`);
 
   if (!areYouSure) {
-    return;
+    return false;
   }
-  return api.patch(`session/${sessionId}/cancel`);
+  api.patch(`/sessions/${sessionId}/cancel`);
+  return true;
 }

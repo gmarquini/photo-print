@@ -63,8 +63,10 @@ export function SessionSide({
 
   return (
     <form className="session-side">
-      <p>{selectedCount} fotos selecionadas</p>
-      <h2>Selecione as fotos e defina como quer imprimir</h2>
+      <div className="side-header">
+        <p>{selectedCount} fotos selecionadas</p>
+        <h2>Selecione as fotos e defina como quer imprimir</h2>
+      </div>
       <div className="size-container">
         <label>Tamanho</label>
       </div>
