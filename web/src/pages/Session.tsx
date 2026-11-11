@@ -332,7 +332,7 @@ export function Session() {
                   <div className="photo-thumbnail" key={photo.id}>
                     <img
                       className="photo"
-                      src={`http://localhost:3000/sessions/${sessionId}/photos/${photo.id}`}
+                      src={`${import.meta.env.VITE_API_URL}/sessions/${sessionId}/photos/${photo.id}`}
                       alt={photo.filename}
                     />
                     <button
