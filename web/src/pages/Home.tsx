@@ -1,7 +1,6 @@
 import { api } from "../services/api";
 import "../styles/home-style.css";
 import { useNavigate } from "react-router";
-import veryImg from "../assets/VERY.png";
 import { useState } from "react";
 
 export function Home() {
@@ -36,9 +35,7 @@ export function Home() {
       <section className="home-content">
         <p className="home-eyebrow">Seus momentos, impressos</p>
         <h1>
-          <span>Very</span>
-          <img src={veryImg} alt="" />
-          <span>Smart Print</span>
+          Very <span className="very">Very!</span> Smart Print
         </h1>
         <p className="home-description">
           Transforme suas fotos favoritas em lembranças para guardar.

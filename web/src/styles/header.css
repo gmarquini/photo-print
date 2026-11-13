@@ -10,16 +10,36 @@
   box-shadow: var(--shadow);
   color: var(--accent);
   font-size: clamp(1.4rem, 2vw, 2.15rem);
-  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.header img {
-  width: 6rem;
-  rotate: -9deg;
+.very-very-logo {
+  font-family: "Rethink Sans", Inter, ui-sans-serif, sans-serif;
+  font-size: clamp(2.5rem, 7.5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.07em;
+  line-height: 1;
+
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
 
-.very-very-logo {
-  cursor: pointer;
+.very-very-logo span {
+  font-size: 4rem;
+  display: inline-block;
+  transform: rotate(-20deg);
+  background: linear-gradient(
+    to right,
+    rgb(255, 81, 0),
+    rgb(255, 187, 0),
+    green,
+    cyan,
+    blue,
+    violet
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

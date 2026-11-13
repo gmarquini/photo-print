@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from "react-router";
-import veryImg from "../assets/VERY.png";
 import { cancelSession } from "../utils/cancelSession";
 import "../styles/header.css";
 
@@ -30,7 +29,7 @@ export function Header() {
           }
         }}
       >
-        Very <img src={veryImg} alt="" /> Smart Print
+        Very <span>Very!</span> Smart Print
       </div>
     </header>
   );
